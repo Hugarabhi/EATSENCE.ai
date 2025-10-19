@@ -3,14 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eatsence: AI Nutrition Tracker</title>
+    <title>eatsence.ai: AI Nutrition Tracker</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js"></script>
     <style>
         :root {
             --primary-gold: #D4AF37;
@@ -26,8 +22,6 @@
             color: var(--soft-ivory);
             min-height: 100vh;
             overflow-x: hidden;
-            display: flex;
-            flex-direction: column; /* Ensure footer stays at the bottom */
         }
         
         .luxury-card {
@@ -42,28 +36,27 @@
             overflow: hidden;
         }
         
-        .luxury-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50,15 C60,15 70,20 75,30 C80,40 80,50 75,60 C70,70 60,75 50,75 C40,75 30,70 25,60 C20,50 20,40 25,30 C30,20 40,15 50,15 Z' fill='none' stroke='rgba(212,175,55,0.03)' stroke-width='1'/%3E%3Ctext x='50' y='52' text-anchor='middle' fill='rgba(212,175,55,0.03)' font-size='10' font-family='Arial'%3EEatsence%3C/text%3E%3C/svg%3E");
-            background-repeat: repeat;
-            opacity: 0.3;
-            z-index: 0;
-        }
-        
-        .luxury-card > * {
-            position: relative;
-            z-index: 1;
-        }
-        
         .luxury-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 15px 40px rgba(212, 175, 55, 0.2);
             border-color: rgba(212, 175, 55, 0.3);
+        }
+
+        /* Logo Watermark Styling */
+        .logo-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 0;
+            background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/4QAiRXhpZgAATU0AKgAAAAgAAQESAAMAAAABAAEAAAAAAAD/2wBDAAIBAQIBAQICAgICAgICAwUDAwMDAwYEBAMFBwYHBwcGBwcICQsJCAgKCAcHCg0KCgsMDAwMBwkODw0MDgsMDAz/2wDAQICAgMDAwYDAwYMCAcIDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wAARCAH0AfQDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRB1ESExIhY3GUk5RRUgaGxwYmR0Vmd3eHh5jY5UYWJjZGhwaHl9e3uayrC3v7jIxczR0lJkpbXFyc3V1nd4eXqayrC3v7jIxczR0lJkpbXFyc3V1nd4eXqayv/EAB8BAQADAQEBAQEBAQEBAAAAAAAAAAECwMDQYJcQERIhMTL/8QAtBEAAgECAwQHBgYEBAEFAfEBAgMABBESITEFURVAgZEGMnGSkxVDUqLR0gIHFlbX2RnYwOEhgbHTZ3eHVXgIeMhkaLhzdnfr8P8QxM/8Q/9oADAMBAAIRAxEH/9k=');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
         }
         
         .gold-accent {
@@ -108,32 +101,6 @@
             transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
         }
-
-        /* REBUILT: GOOGLE SIGN-IN BUTTON STYLE */
-        .google-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: white;
-            color: var(--dark-charcoal);
-            font-weight: 600;
-            border-radius: 16px;
-            padding: 14px 28px;
-            border: 1px solid #ccc;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .google-button:hover {
-            background-color: #f7f7f7;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            transform: translateY(-2px);
-        }
-        
-        .google-button svg {
-            margin-right: 10px;
-        }
-        /* END GOOGLE SIGN-IN BUTTON STYLE */
         
         .luxury-sidebar {
             background: rgba(10, 14, 23, 0.8);
@@ -250,6 +217,37 @@
                 margin-left: 16rem; /* ml-64 */
             }
         }
+
+        /* Sidebar Toggle for Mobile */
+        .sidebar-mobile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 39;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .sidebar-mobile-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #sidebar {
+            transition: transform 0.3s ease;
+        }
+
+        #sidebar.mobile-hidden {
+            transform: translateX(-100%);
+        }
+
+        #sidebar.mobile-open {
+            transform: translateX(0);
+        }
         
         .luxury-modal {
             background: rgba(10, 14, 23, 0.95);
@@ -280,12 +278,6 @@
             transform: scale(1.1);
         }
         
-        .section-divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.5), transparent);
-            margin: 24px 0;
-        }
-        
         .luxury-tag {
             background: rgba(212, 175, 55, 0.2);
             color: var(--primary-gold);
@@ -295,688 +287,370 @@
             font-weight: 600;
             border: 1px solid rgba(212, 175, 55, 0.3);
         }
-        
-        .eatsence-logo {
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            background: linear-gradient(135deg, #D4AF37 0%, #FFD700 50%, #B8860B 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            position: relative;
-        }
-        
-        .eatsence-logo::after {
-            content: "AI";
-            position: absolute;
-            top: -8px;
-            right: -25px;
-            font-size: 0.6em;
-            background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .modal-backdrop {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 40;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .close-modal-area {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-        
-        .logo-watermark {
-            position: absolute;
-            opacity: 0.03;
-            font-size: 8rem;
-            font-weight: bold;
-            color: #D4AF37;
-            z-index: 0;
-            pointer-events: none;
-            font-family: 'Playfair Display', serif;
-        }
-        
-        .camera-container {
-            position: relative;
-            width: 100%;
-            max-width: 500px;
-            margin: 0 auto;
-            border-radius: 16px;
-            overflow: hidden;
-            background: #000;
+
+        /* NEW: Hidden input styling for camera button */
+        .file-input-label {
+            display: block;
+            cursor: pointer;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--soft-ivory);
+            font-weight: 500;
+            transition: all 0.3s;
         }
 
-        /* REBUILT: Changed #camera-preview to handle canvas/video dynamically */
-        #camera-preview {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-            background: #000;
-            display: block;
-        }
-        /* REBUILT: Added canvas for image preview */
-        #captured-image-preview {
-            width: 100%;
-            height: 300px;
-            object-fit: contain;
-            background: #000;
-            display: none; /* Initially hidden */
-        }
-        /* END REBUILT CAMERA STYLES */
-        
-        .camera-controls {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            margin-top: 16px;
-        }
-        
-        .camera-button {
+        .file-input-label:hover {
             background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            transform: translateY(-2px);
+            border-color: var(--primary-gold);
         }
-        
-        .camera-button:hover {
-            background: rgba(212, 175, 55, 0.3);
-            transform: scale(1.1);
+
+        .file-input-label input {
+            display: none;
         }
-        
-        .capture-button {
-            background: linear-gradient(135deg, var(--primary-gold) 0%, #B8860B 100%);
-            border: none;
-        }
-        
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-gold) 0%, #B8860B 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--deep-navy);
-            font-weight: bold;
-        }
-        
-        .login-container {
-            flex-grow: 1; /* Allow login container to grow and push footer down */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding-bottom: 80px; /* Space for the footer */
-        }
-        
-        .login-card {
+
+        /* NEW: Enhanced glass-input for better select/input visibility */
+        .glass-input-enhanced {
             background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 40px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            padding: 14px 16px;
+            color: var(--soft-ivory);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            -webkit-appearance: none; /* Remove default browser styling for select */
+            appearance: none;
         }
         
-        .logo-container {
-            text-align: center;
-            margin-bottom: 30px;
+        .glass-input-enhanced:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
         }
         
-        .logo-large {
-            font-size: 3rem;
-            margin-bottom: 10px;
-        }
-        
-        .fitness-badge {
-            background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            display: inline-block;
-            margin-top: 8px;
-        }
-        
+        /* NEW: Welcome Animation */
         .welcome-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--deep-navy) 0%, #0D131F 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            flex-direction: column;
-        }
-        
-        .welcome-logo {
-            font-size: 4rem;
-            margin-bottom: 20px;
+            animation: welcomeSlideIn 1.2s ease-out forwards;
             opacity: 0;
             transform: translateY(30px);
-            animation: fadeInUp 1s ease forwards 0.5s;
         }
         
-        .welcome-text {
-            font-size: 1.5rem;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: fadeInUp 1s ease forwards 1s;
-        }
-        
-        @keyframes fadeInUp {
-            to {
+        @keyframes welcomeSlideIn {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
         
-        .fade-out {
-            animation: fadeOut 1s ease forwards;
-        }
-        
-        @keyframes fadeOut {
-            to {
-                opacity: 0;
-                visibility: hidden;
-            }
-        }
-        
-        .email-toggle {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
-            margin-top: 16px;
-        }
-        
-        .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
-        }
-        
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(255, 255, 255, 0.1);
-            transition: .4s;
-            border-radius: 34px;
-        }
-        
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-        
-        input:checked + .slider {
-            background-color: var(--primary-gold);
-        }
-        
-        input:checked + .slider:before {
-            transform: translateX(26px);
-        }
-        
-        .loading-overlay {
+        /* NEW: Background Logo Watermark */
+        .bg-logo-watermark {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            flex-direction: column;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            opacity: 0.02;
+            pointer-events: none;
+            z-index: 0;
+            background-image: url('eatsence logo.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
         }
-        
-        .loading-spinner {
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 4px solid var(--primary-gold);
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* New Footer Style */
-        .app-footer {
-            background: rgba(10, 14, 23, 0.6);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-top: 1px solid rgba(212, 175, 55, 0.1);
-            color: rgba(245, 245, 240, 0.6);
-            padding: 1rem 2rem;
-            width: 100%;
-            text-align: center;
-        }
-        @media (min-width: 640px) {
-             .app-footer-fixed-login {
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                z-index: 30; /* Below modals/overlays */
-            }
-        }
-        @media (max-width: 639px) {
-             .app-footer-fixed-login {
-                position: static;
-                margin-top: 30px;
-            }
-        }
-        
-        .sidebar-header {
-            @apply w-full flex justify-between items-center text-base font-semibold text-white p-3 rounded-xl bg-gradient-to-r from-amber-900/30 to-transparent hover:from-amber-800/40 transition-all duration-300 cursor-pointer border border-amber-900/20 hover:border-amber-700/40;
-        }
-        .sidebar-sub-btn {
-            @apply w-full text-left py-2 px-4 rounded-lg text-amber-100/80 hover:bg-amber-900/20 hover:text-amber-300 transition-all duration-300 text-sm font-medium border border-transparent hover:border-amber-800/30;
-        }
-
     </style>
 </head>
-<body>
-    <div id="welcome-animation" class="welcome-animation">
-        <div class="eatsence-logo welcome-logo">Eatsence</div>
-        <div class="welcome-text text-amber-200">Your AI Nutrition Companion</div>
-    </div>
-
-    <div id="loading-overlay" class="loading-overlay hidden">
-        <div class="loading-spinner"></div>
-        <p class="text-amber-200 mt-4" id="loading-text">Loading...</p>
-    </div>
-
-    <div id="login-flow-container" class="flex flex-col min-h-screen">
-        <div id="login-screen" class="login-container hidden">
-            <div class="login-card">
-                <div class="logo-container">
-                    <div class="eatsence-logo logo-large">Eatsence</div>
-                    <div class="fitness-badge">AI Nutrition & Fitness</div>
-                </div>
-                <div id="username-input-group" class="hidden space-y-5">
-                    <label for="display-name-input" class="block text-sm font-medium text-amber-200/80 mb-2">Your Name</label>
-                    <input type="text" id="display-name-input" class="glass-input w-full" placeholder="Enter your preferred name" required>
-                </div>
-                <form id="login-form" class="space-y-5">
-                    <div>
-                        <label for="email-input" class="block text-sm font-medium text-amber-200/80 mb-2">Email</label>
-                        <input type="email" id="email-input" class="glass-input w-full" placeholder="Enter your email" required>
-                    </div>
-                    <div>
-                        <label for="password-input" class="block text-sm font-medium text-amber-200/80 mb-2">Password</label>
-                        <input type="password" id="password-input" class="glass-input w-full" placeholder="Enter your password" required>
-                    </div>
-                    <div class="email-toggle">
-                        <span class="text-amber-200/80 text-sm">Receive Daily Progress Reports</span>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="email-reports-toggle" checked>
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    <button type="submit" class="w-full luxury-button text-lg">Sign In</button>
-                    <div class="text-center text-amber-200/60 text-sm mt-4">
-                        <p>Don't have an account? <a href="#" class="text-amber-400 hover:text-amber-300 transition-colors" onclick="showSignup()">Sign up</a></p>
-                    </div>
-                </form>
-                
-                <div class="section-divider my-6"></div> 
-                <button id="google-login-button" class="google-button w-full text-lg">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M21.9999 12.235C21.9999 11.4589 21.9363 10.7425 21.8085 10.0528H12.2498V14.1611H17.6974C17.4764 15.352 16.8256 16.3813 15.867 17.0655V20.1804H19.9829C22.3735 18.0673 23.6339 15.1158 23.6339 12.235C23.6339 12.1583 23.6339 12.0815 23.6339 12.0048L21.9999 12.235Z" fill="#4285F4"/>
-                        <path d="M12.2498 23.6339C15.5458 23.6339 18.3562 22.5647 20.3235 20.9161L17.1979 17.7891C16.3262 18.4734 15.3086 18.8941 14.1611 19.0474C11.5147 19.3496 9.3908 17.158 9.3908 14.496C9.3908 11.8339 11.5147 9.64242 14.1611 9.94464C15.3086 10.0979 16.3262 10.5186 17.1979 11.2029L20.3235 8.07684C18.3562 6.42828 15.5458 5.35899 12.2498 5.35899C6.83796 5.35899 2.59363 9.77123 2.59363 15.1831C2.59363 20.5949 6.83796 25.0072 12.2498 25.0072L12.2498 23.6339Z" fill="#34A853"/>
-                        <path d="M2.59363 15.1831C2.59363 12.4497 3.53587 9.93049 5.25368 8.07684L8.37923 11.2029C7.81053 11.969 7.42398 12.875 7.42398 13.7811L7.42398 13.9344C7.42398 17.072 9.48912 19.7183 12.2498 20.0993C13.5632 20.2526 14.7761 19.8659 15.867 19.0474L19.9829 22.173C18.3562 23.6843 15.5458 24.6265 12.2498 24.6265C6.83796 24.6265 2.59363 20.5949 2.59363 15.1831Z" fill="#FBBC05"/>
-                        <path d="M23.6339 12.0048H23.6339C23.6339 12.1583 23.6339 12.3115 23.6339 12.4648L22.0006 12.235C21.8085 10.0528 20.1599 8.32483 17.6974 8.02127L20.823 4.89572C22.3735 6.62779 23.3157 9.14705 23.3157 12.0048H23.6339Z" fill="#EA4335"/>
-                    </svg>
-                    Sign In with Google
-                </button>
-                <div id="login-error" class="text-red-400 text-sm mt-4 text-center hidden"></div>
-            </div>
-        </div>
-        
-        <footer id="login-footer" class="app-footer app-footer-fixed-login">
-            <div class="flex flex-col sm:flex-row justify-center items-center space-y-2 sm:space-y-0 sm:space-x-8 text-xs font-medium">
-                <p>&copy; 2025 Eatsence AI</p>
-                <a href="https://github.com/eatsence-ai" target="_blank" class="text-amber-400 hover:text-amber-300 transition-colors">GitHub</a>
-                <a href="https://eatsence.ai" target="_blank" class="text-amber-400 hover:text-amber-300 transition-colors">Website</a>
-                <a href="mailto:support@eatsence.ai" class="text-amber-400 hover:text-amber-300 transition-colors">Email: support@eatsence.ai</a>
-            </div>
-        </footer>
-    </div>
+<body class="min-h-screen flex">
+    <!-- NEW: Background Logo Watermark -->
+    <div class="bg-logo-watermark"></div>
     
-    <div id="main-app" class="min-h-screen flex hidden">
-        <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
-            <div class="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-gradient-to-r from-yellow-900 to-transparent opacity-10 blur-3xl"></div>
-            <div class="absolute -bottom-40 -left-40 w-80 h-80 rounded-full bg-gradient-to-r from-amber-900 to-transparent opacity-10 blur-3xl"></div>
-            <div class="absolute top-1/2 left-1/4 w-60 h-60 rounded-full bg-gradient-to-r from-amber-800 to-transparent opacity-5 blur-3xl"></div>
-        </div>
-
-        <nav id="sidebar" class="fixed top-0 left-0 h-full w-64 luxury-sidebar z-40 p-6 space-y-6 overflow-y-auto custom-scrollbar sm:block hidden">
-            <div class="flex items-center space-x-3 mb-8 pt-4">
-                <div class="user-avatar" id="user-avatar">
-                    <span id="user-initial">U</span>
-                </div>
-                <div>
-                    <h2 class="text-lg font-bold text-white" id="username-display">User</h2>
-                    <p class="text-xs text-amber-200/60" id="user-email">user@example.com</p>
-                </div>
-            </div>
-
-            
-            <div>
-                <button class="sidebar-header" data-target="mental-flow-content" onclick="toggleSection(this)">
-                    <span class="flex items-center">
-                        <span class="mr-2">🧠</span> Mental Flow
-                    </span>
-                    <span class="sidebar-arrow transition-transform">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-                    </span>
-                </button>
-                <div id="mental-flow-content" class="sidebar-content space-y-1 py-1 pl-2">
-                    <button onclick="startMeditation()" class="sidebar-sub-btn">Start Meditation</button>
-                    <button id="journal-open-btn" class="sidebar-sub-btn">Gratitude Journal</button>
-                    <button onclick="showAffirmation()" class="sidebar-sub-btn">Affirmation Generator</button>
-                    <button onclick="showSimpleMessage('Digital Detox', 'Reminder set: We\'ll alert you when it\'s time for your daily screen-free goal.', 'amber-400')" class="sidebar-sub-btn">Digital Detox Reminder</button>
-                </div>
-            </div>
-
-            <div>
-                <button class="sidebar-header" data-target="physical-flow-content" onclick="toggleSection(this)">
-                    <span class="flex items-center">
-                        <span class="mr-2">💪</span> Physical Balance
-                    </span>
-                    <span class="sidebar-arrow transition-transform">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-                    </span>
-                </button>
-                <div id="physical-flow-content" class="sidebar-content space-y-1 py-1 pl-2">
-                    <button onclick="planMeal()" class="sidebar-sub-btn">Plan My Meal (AI)</button>
-                    <button onclick="startWaterTracker()" id="water-tracker-btn" class="sidebar-sub-btn">Water Tracker: 0% (0 cups)</button>
-                    <button onclick="generateWorkout()" class="sidebar-sub-btn">Workout Routine Generator</button>
-                    <button onclick="postureAlert()" class="sidebar-sub-btn">Posture Alert Timer</button>
-                </div>
-            </div>
-
-            <div>
-                <button class="sidebar-header" data-target="emotional-flow-content" onclick="toggleSection(this)">
-                    <span class="flex items-center">
-                        <span class="mr-2">❤️</span> Emotional Core
-                    </span>
-                    <span class="sidebar-arrow transition-transform">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-                    </span>
-                </button>
-                <div id="emotional-flow-content" class="sidebar-content space-y-1 py-1 pl-2">
-                    <button onclick="startMoodMusic()" class="sidebar-sub-btn">Mood Music Player</button>
-                    <button id="mood-tracker-btn" class="sidebar-sub-btn">Mood Tracker</button>
-                    <button onclick="connectAndShare()" class="sidebar-sub-btn">Connect & Share (Positive)</button>
-                    <button onclick="showSimpleMessage('Nature Timer', 'Reminder set: Take 20 minutes outside today for fresh air.', 'green-400')" class="sidebar-sub-btn">Nature Timer</button>
-                </div>
-            </div>
-
-            <div>
-                <button class="sidebar-header" data-target="daily-flow-content" onclick="toggleSection(this)">
-                    <span class="flex items-center">
-                        <span class="mr-2">🌙</span> Daily System & Goals
-                    </span>
-                    <span class="sidebar-arrow transition-transform">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-                    </span>
-                </button>
-                <div id="daily-flow-content" class="sidebar-content space-y-1 py-1 pl-2">
-                    <button onclick="scheduleDay()" class="sidebar-sub-btn">Schedule My Day</button>
-                    <button onclick="showReminders()" class="sidebar-sub-btn">Health Reminders</button>
-                    <button onclick="runChallenge()" class="sidebar-sub-btn">Run 2-Day Challenge</button>
-                    <button onclick="showSimpleMessage('Progress Tracker', 'View hydration, sleep, and mood trends (Future Feature).', 'gray-400')" class="sidebar-sub-btn">Progress Tracker</button>
-                    <button onclick="sendDailyReport()" class="sidebar-sub-btn">Send Daily Report</button>
-                </div>
-            </div>
-            
-            <div class="pt-8 border-t border-amber-900/30 mt-8">
-                <button onclick="logout()" class="w-full py-2 text-amber-200/80 hover:text-amber-300 text-sm font-medium transition-colors text-center">
-                    Log Out
-                </button>
-                <div class="text-center text-amber-200/60 text-xs mt-4">
-                    <p>Eatsence Premium</p>
-                    <p class="mt-1">Health & Wellness</p>
-                </div>
-            </div>
-        </nav>
-
-        <div id="dashboard-container" class="flex-1 p-4 sm:p-8 max-w-4xl mx-auto sm:ml-64 relative z-10 pb-20"> <header class="mb-8 flex justify-between items-center pb-6">
-                <div>
-                    <h1 class="text-4xl font-bold font-serif eatsence-logo mb-2">Eatsence</h1>
-                    <p class="text-amber-200/70 text-sm">Welcome back, <span id="header-username" class="font-semibold text-amber-300">User</span>! Let's track your nutrition.</p>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <p id="dashboard-date" class="text-amber-200/60 text-sm font-medium"></p>
-                    <button id="goals-button" class="luxury-button text-sm">Set Goals</button>
-                </div>
-            </header>
-            
-            <div id="summary-card" class="mb-8 luxury-card p-6 floating-element">
-                <div class="logo-watermark top-4 right-4">Eatsence</div>
-                <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-xl font-bold gold-accent">Today's Nutrition Budget</h2>
-                    <span class="luxury-tag">Daily Target</span>
-                </div>
-                <div class="grid grid-cols-2 gap-6">
-                    <div class="text-center p-4 rounded-2xl bg-gradient-to-br from-amber-900/20 to-transparent border border-amber-800/30">
-                        <p class="text-sm text-amber-200/70 mb-1">Target Calories</p>
-                        <p id="summary-target" class="text-3xl font-extrabold text-white">2200 <span class="text-base text-amber-200/60">kcal</span></p>
-                    </div>
-                    <div class="text-center p-4 rounded-2xl bg-gradient-to-br from-cyan-900/20 to-transparent border border-cyan-800/30">
-                        <p class="text-sm text-cyan-200/70 mb-1">Remaining</p>
-                        <p id="summary-remaining" class="text-3xl font-extrabold text-cyan-300">2200 <span class="text-base text-cyan-200/60">kcal</span></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex flex-col items-center mb-10 luxury-card p-8">
-                <div class="logo-watermark top-8 right-8">Eatsence</div>
-                <div class="relative flex items-center justify-center mb-6">
-                    <svg id="progress-svg" width="220" height="220" viewBox="0 0 220 220" class="progress-ring">
-                        <circle class="text-amber-900/30" stroke-width="14" stroke="currentColor" fill="transparent" r="100" cx="110" cy="110"/>
-                        <circle id="progress-circle"
-                            class="text-amber-500 transition-all duration-1000 ease-out"
-                            stroke-width="14"
-                            stroke-dasharray="0"
-                            stroke-dashoffset="0"
-                            stroke-linecap="round"
-                            stroke="currentColor"
-                            fill="transparent"
-                            r="100"
-                            cx="110"
-                            cy="110"/>
-                        <circle class="text-amber-900/10" stroke-width="1" stroke="currentColor" fill="transparent" r="85" cx="110" cy="110"/>
-                    </svg>
-                    <div class="absolute flex flex-col items-center">
-                        <p id="kcal-consumed" class="text-5xl font-extrabold text-white">0</p>
-                        <p class="text-base text-amber-200/60">of <span id="kcal-target">2200</span> kcal</p>
-                        <p id="kcal-percentage" class="text-sm mt-2 font-semibold text-amber-400">0% Complete</p>
-                    </div>
-                </div>
-                <button id="scan-button" class="luxury-button text-lg pulse-glow">
-                    <span class="inline-block mr-2 text-xl align-middle">📸</span> AI Scan Food
-                </button>
-            </div>
-
-            <h2 class="text-2xl font-bold text-white mb-6 font-serif">Macronutrients</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
-                <div id="protein-card" class="luxury-card p-5">
-                    <div class="logo-watermark -top-4 -right-4">E</div>
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-semibold text-amber-300">Protein</h3>
-                        <span class="text-xs luxury-tag">Muscle Fuel</span>
-                    </div>
-                    <div class="text-2xl font-bold text-white mb-2">
-                        <span id="protein-value">0.0</span> <span class="text-base font-normal text-amber-200/60">g</span>
-                    </div>
-                    <div class="macro-progress mb-1" style="--progress-width: 0%; --progress-color: #D4AF37;"></div>
-                    <p class="text-xs text-amber-200/60">Goal: <span id="protein-target">150</span> g</p>
-                </div>
-                
-                <div id="fat-card" class="luxury-card p-5">
-                    <div class="logo-watermark -top-4 -right-4">E</div>
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-semibold text-amber-300">Fats</h3>
-                        <span class="text-xs luxury-tag">Energy Source</span>
-                    </div>
-                    <div class="text-2xl font-bold text-white mb-2">
-                        <span id="fat-value">0.0</span> <span class="text-base font-normal text-amber-200/60">g</span>
-                    </div>
-                    <div class="macro-progress mb-1" style="--progress-width: 0%; --progress-color: #F59E0B;"></div>
-                    <p class="text-xs text-amber-200/60">Goal: <span id="fat-target">60</span> g</p>
-                </div>
-                
-                <div id="carbs-card" class="luxury-card p-5">
-                    <div class="logo-watermark -top-4 -right-4">E</div>
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-semibold text-amber-300">Carbs</h3>
-                        <span class="text-xs luxury-tag">Energy Boost</span>
-                    </div>
-                    <div class="text-2xl font-bold text-white mb-2">
-                        <span id="carbs-value">0.0</span> <span class="text-base font-normal text-amber-200/60">g</span>
-                    </div>
-                    <div class="macro-progress mb-1" style="--progress-width: 0%; --progress-color: #EAB308;"></div>
-                    <p class="text-xs text-amber-200/60">Goal: <span id="carbs-target">250</span> g</p>
-                </div>
-            </div>
-
-            <div class="luxury-card p-6">
-                <div class="logo-watermark top-6 right-6">Eatsence</div>
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold text-white font-serif">Daily Food Log</h2>
-                    <span class="luxury-tag">Today</span>
-                </div>
-                <div id="log-history" class="space-y-4 pb-4 custom-scrollbar max-h-96 overflow-y-auto">
-                    <div class="text-amber-200/50 p-8 text-center italic">
-                        No food logged yet. Snap a picture or select an item!
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        
-        <footer id="app-footer" class="app-footer sm:ml-64">
-            <div class="flex flex-col sm:flex-row justify-center items-center space-y-2 sm:space-y-0 sm:space-x-8 text-xs font-medium">
-                <p>&copy; 2025 Eatsence AI</p>
-                <a href="https://github.com/eatsence-ai" target="_blank" class="text-amber-400 hover:text-amber-300 transition-colors">GitHub</a>
-                <a href="https://eatsence.ai" target="_blank" class="text-amber-400 hover:text-amber-300 transition-colors">Website</a>
-                <a href="mailto:support@eatsence.ai" class="text-amber-400 hover:text-amber-300 transition-colors">Email: support@eatsence.ai</a>
-            </div>
-        </footer>
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-gradient-to-r from-yellow-900 to-transparent opacity-10 blur-3xl"></div>
+        <div class="absolute -bottom-40 -left-40 w-80 h-80 rounded-full bg-gradient-to-r from-amber-900 to-transparent opacity-10 blur-3xl"></div>
+        <div class="absolute top-1/2 left-1/4 w-60 h-60 rounded-full bg-gradient-to-r from-amber-800 to-transparent opacity-5 blur-3xl"></div>
     </div>
 
-    <div id="scan-modal" class="modal-backdrop hidden">
-        <div class="close-modal-area" id="close-modal-backdrop"></div>
-        <div class="luxury-modal p-8 w-full max-w-lg relative">
-            <button id="close-modal-button" class="absolute top-4 right-4 text-amber-200/70 hover:text-amber-300 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
+    <div id="sidebar-overlay" class="sidebar-mobile-overlay sm:hidden" onclick="toggleSidebar()"></div>
+
+    <nav id="sidebar" class="fixed top-0 left-0 h-full w-64 luxury-sidebar z-40 p-6 space-y-6 overflow-y-auto custom-scrollbar mobile-hidden sm:mobile-open">
+        <div class="flex flex-col items-center justify-center mb-8 pt-4">
+            <img src="eatsence logo.png" alt="eatsence.ai Logo" class="w-32 h-auto mb-2">
+            <h2 class="text-2xl font-bold gold-gradient font-serif">EATSENCE<span class="text-amber-200/80 text-sm">.ai</span></h2>
+        </div>
+
+        <style>
+            .sidebar-header {
+                @apply w-full flex justify-between items-center text-base font-semibold text-white p-3 rounded-xl bg-gradient-to-r from-amber-900/30 to-transparent hover:from-amber-800/40 transition-all duration-300 cursor-pointer border border-amber-900/20 hover:border-amber-700/40;
+            }
+            .sidebar-sub-btn {
+                @apply w-full text-left py-2 px-4 rounded-lg text-amber-100/80 hover:bg-amber-900/20 hover:text-amber-300 transition-all duration-300 text-sm font-medium border border-transparent hover:border-amber-800/30;
+            }
+        </style>
+        
+        <div>
+            <button class="sidebar-header" data-target="mental-flow-content" onclick="toggleSection(this)">
+                <span class="flex items-center">
+                    <span class="mr-2">🧠</span> Mental Flow
+                </span>
+                <span class="sidebar-arrow transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                </span>
             </button>
+            <div id="mental-flow-content" class="sidebar-content space-y-1 py-1 pl-2">
+                <button onclick="startMeditation()" class="sidebar-sub-btn">Start Meditation</button>
+                <button id="journal-open-btn" class="sidebar-sub-btn">Gratitude Journal</button>
+                <button onclick="showAffirmation()" class="sidebar-sub-btn">Affirmation Generator</button>
+                <button onclick="showSimpleMessage('Digital Detox', 'Reminder set: We\'ll alert you when it\'s time for your daily screen-free goal.', 'amber-400')" class="sidebar-sub-btn">Digital Detox Reminder</button>
+            </div>
+        </div>
+
+        <div>
+            <button class="sidebar-header" data-target="physical-flow-content" onclick="toggleSection(this)">
+                <span class="flex items-center">
+                    <span class="mr-2">💪</span> Physical Balance
+                </span>
+                <span class="sidebar-arrow transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                </span>
+            </button>
+            <div id="physical-flow-content" class="sidebar-content space-y-1 py-1 pl-2">
+                <button onclick="planMeal()" class="sidebar-sub-btn">Plan My Meal (AI)</button>
+                <button onclick="startWaterTracker()" id="water-tracker-btn" class="sidebar-sub-btn">Water Tracker: 0% (0 cups)</button>
+                <button onclick="generateWorkout()" class="sidebar-sub-btn">Workout Routine Generator</button>
+                <button onclick="postureAlert()" class="sidebar-sub-btn">Posture Alert Timer</button>
+            </div>
+        </div>
+
+        <div>
+            <button class="sidebar-header" data-target="emotional-flow-content" onclick="toggleSection(this)">
+                <span class="flex items-center">
+                    <span class="mr-2">❤️</span> Emotional Core
+                </span>
+                <span class="sidebar-arrow transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                </span>
+            </button>
+            <div id="emotional-flow-content" class="sidebar-content space-y-1 py-1 pl-2">
+                <button onclick="startMoodMusic()" class="sidebar-sub-btn">Mood Music Player</button>
+                <button id="mood-tracker-btn" class="sidebar-sub-btn">Mood Tracker</button>
+                <button onclick="connectAndShare()" class="sidebar-sub-btn">Connect & Share (Positive)</button>
+                <button onclick="showSimpleMessage('Nature Timer', 'Reminder set: Take 20 minutes outside today for fresh air.', 'green-400')" class="sidebar-sub-btn">Nature Timer</button>
+            </div>
+        </div>
+
+        <div>
+            <button class="sidebar-header" data-target="daily-flow-content" onclick="toggleSection(this)">
+                <span class="flex items-center">
+                    <span class="mr-2">🌙</span> Daily System & Goals
+                </span>
+                <span class="sidebar-arrow transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                </span>
+            </button>
+            <div id="daily-flow-content" class="sidebar-content space-y-1 py-1 pl-2">
+                <button onclick="scheduleDay()" class="sidebar-sub-btn">Schedule My Day</button>
+                <button onclick="showReminders()" class="sidebar-sub-btn">Health Reminders</button>
+                <button onclick="runChallenge()" class="sidebar-sub-btn">Run 2-Day Challenge</button>
+                <button onclick="showSimpleMessage('Progress Tracker', 'View hydration, sleep, and mood trends (Future Feature).', 'gray-400')" class="sidebar-sub-btn">Progress Tracker</button>
+            </div>
+        </div>
+        
+        <div class="pt-8 border-t border-amber-900/30 mt-8">
+            <div class="text-center text-amber-200/60 text-xs">
+                <p>eatsence.ai Premium</p>
+                <p class="mt-1">Health & Wellness</p>
+            </div>
+        </div>
+    </nav>
+
+    <div id="dashboard-container" class="flex-1 p-4 sm:p-8 max-w-4xl mx-auto sm:ml-64 relative z-10">
+        <header class="mb-8 flex justify-between items-center pb-6">
+            <div class="flex items-center space-x-4">
+                 <button id="mobile-sidebar-toggle" class="sm:hidden p-2 rounded-lg text-amber-300 hover:bg-amber-900/30 transition-colors">
+                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                     </svg>
+                 </button>
+                 <div>
+                     <!-- NEW: Added username display -->
+                     <h1 class="text-4xl font-bold font-serif gold-gradient mb-2">Welcome, <span id="username-display">Alex</span>!</h1>
+                     <p class="text-amber-200/70 text-sm">AI-Powered Nutrition & Wellness Tracking</p>
+                 </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <p id="dashboard-date" class="text-amber-200/60 text-sm font-medium"></p>
+                <button id="goals-button" class="luxury-button text-sm">Set Goals</button>
+            </div>
+        </header>
+        
+        <!-- NEW: Added welcome-animation class -->
+        <div id="summary-card" class="mb-8 luxury-card p-6 floating-element welcome-animation" style="animation-delay: 0.1s">
+            <div class="logo-watermark"></div> <div class="flex justify-between items-start mb-4 relative z-10">
+                <h2 class="text-xl font-bold gold-accent">Today's Nutrition Budget</h2>
+                <span class="luxury-tag">Daily Target</span>
+            </div>
+            <div class="grid grid-cols-2 gap-6 relative z-10">
+                <div class="text-center p-4 rounded-2xl bg-gradient-to-br from-amber-900/20 to-transparent border border-amber-800/30">
+                    <p class="text-sm text-amber-200/70 mb-1">Target Calories</p>
+                    <p id="summary-target" class="text-3xl font-extrabold text-white">2200 <span class="text-base text-amber-200/60">kcal</span></p>
+                </div>
+                <div class="text-center p-4 rounded-2xl bg-gradient-to-br from-cyan-900/20 to-transparent border border-cyan-800/30">
+                    <p class="text-sm text-cyan-200/70 mb-1">Remaining</p>
+                    <p id="summary-remaining" class="text-3xl font-extrabold text-cyan-300">2200 <span class="text-base text-cyan-200/60">kcal</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEW: Added welcome-animation class -->
+        <div class="flex flex-col items-center mb-10 luxury-card p-8 welcome-animation" style="animation-delay: 0.2s">
+            <div class="logo-watermark"></div> <div class="relative flex items-center justify-center mb-6">
+                <svg id="progress-svg" width="220" height="220" viewBox="0 0 220 220" class="progress-ring">
+                    <circle class="text-amber-900/30" stroke-width="14" stroke="currentColor" fill="transparent" r="100" cx="110" cy="110"/>
+                    <circle id="progress-circle"
+                        class="text-amber-500 transition-all duration-1000 ease-out"
+                        stroke-width="14"
+                        stroke-dasharray="0"
+                        stroke-dashoffset="0"
+                        stroke-linecap="round"
+                        stroke="currentColor"
+                        fill="transparent"
+                        r="100"
+                        cx="110"
+                        cy="110"/>
+                    <circle class="text-amber-900/10" stroke-width="1" stroke="currentColor" fill="transparent" r="85" cx="110" cy="110"/>
+                </svg>
+                <div class="absolute flex flex-col items-center">
+                    <p id="kcal-consumed" class="text-5xl font-extrabold text-white">0</p>
+                    <p class="text-base text-amber-200/60">of <span id="kcal-target">2200</span> kcal</p>
+                    <p id="kcal-percentage" class="text-sm mt-2 font-semibold text-amber-400">0% Complete</p>
+                </div>
+            </div>
+            <button id="scan-button" class="luxury-button text-lg pulse-glow">
+                <span class="inline-block mr-2 text-xl align-middle">📸</span> AI Scan Food
+            </button>
+        </div>
+
+        <h2 class="text-2xl font-bold text-white mb-6 font-serif welcome-animation" style="animation-delay: 0.3s">Macronutrients</h2>
+        
+        <!-- NEW: Added welcome-animation class -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
+            <div id="protein-card" class="luxury-card p-5 welcome-animation" style="animation-delay: 0.4s">
+                <div class="logo-watermark"></div> <div class="flex justify-between items-center mb-4 relative z-10">
+                    <h3 class="text-lg font-semibold text-amber-300">Protein</h3>
+                    <span class="text-xs luxury-tag">Muscle Fuel</span>
+                </div>
+                <div class="text-2xl font-bold text-white mb-2 relative z-10">
+                    <span id="protein-value">0.0</span> <span class="text-base font-normal text-amber-200/60">g</span>
+                </div>
+                <div class="macro-progress mb-1 relative z-10" style="--progress-width: 0%; --progress-color: #D4AF37;"></div>
+                <p class="text-xs text-amber-200/60 relative z-10">Goal: <span id="protein-target">150</span> g</p>
+            </div>
+            
+            <div id="fat-card" class="luxury-card p-5 welcome-animation" style="animation-delay: 0.5s">
+                <div class="logo-watermark"></div> <div class="flex justify-between items-center mb-4 relative z-10">
+                    <h3 class="text-lg font-semibold text-amber-300">Fats</h3>
+                    <span class="text-xs luxury-tag">Energy Source</span>
+                </div>
+                <div class="text-2xl font-bold text-white mb-2 relative z-10">
+                    <span id="fat-value">0.0</span> <span class="text-base font-normal text-amber-200/60">g</span>
+                </div>
+                <div class="macro-progress mb-1 relative z-10" style="--progress-width: 0%; --progress-color: #F59E0B;"></div>
+                <p class="text-xs text-amber-200/60 relative z-10">Goal: <span id="fat-target">60</span> g</p>
+            </div>
+            
+            <div id="carbs-card" class="luxury-card p-5 welcome-animation" style="animation-delay: 0.6s">
+                <div class="logo-watermark"></div> <div class="flex justify-between items-center mb-4 relative z-10">
+                    <h3 class="text-lg font-semibold text-amber-300">Carbs</h3>
+                    <span class="text-xs luxury-tag">Energy Boost</span>
+                </div>
+                <div class="text-2xl font-bold text-white mb-2 relative z-10">
+                    <span id="carbs-value">0.0</span> <span class="text-base font-normal text-amber-200/60">g</span>
+                </div>
+                <div class="macro-progress mb-1 relative z-10" style="--progress-width: 0%; --progress-color: #EAB308;"></div>
+                <p class="text-xs text-amber-200/60 relative z-10">Goal: <span id="carbs-target">250</span> g</p>
+            </div>
+        </div>
+
+        <!-- NEW: Added welcome-animation class -->
+        <div class="luxury-card p-6 welcome-animation" style="animation-delay: 0.7s">
+            <div class="logo-watermark"></div> <div class="flex justify-between items-center mb-6 relative z-10">
+                <h2 class="text-2xl font-bold text-white font-serif">Daily Food Log</h2>
+                <span class="luxury-tag">Today</span>
+            </div>
+            <div id="log-history" class="space-y-4 pb-4 custom-scrollbar max-h-96 overflow-y-auto relative z-10">
+                <div class="text-amber-200/50 p-8 text-center italic">
+                    No food logged yet. Snap a picture or select an item!
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="scan-modal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 hidden">
+        <div id="scan-modal-content" class="luxury-modal p-8 w-full max-w-lg">
             <h3 class="text-3xl font-bold mb-6 gold-gradient font-serif text-center">AI Food Analysis</h3>
             
-            <div id="camera-section" class="mb-6">
-                <div class="camera-container">
-                    <video id="camera-preview" autoplay playsinline></video>
-                    <canvas id="captured-image-preview" class="hidden"></canvas>
-                </div>
-                <div class="camera-controls">
-                    <button id="reset-camera-view" class="camera-button hidden" title="Reset Camera">
-                           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 15m15.356-2H16m4 0l-4 4m4-4l-4-4"/>
-                        </svg>
-                    </button>
-                    <button id="switch-camera" class="camera-button" title="Switch Camera">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                    </button>
-                    <button id="capture-button" class="camera-button capture-button" title="Take Picture">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-deep-navy" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                        </svg>
-                    </button>
-                    <button id="upload-button" class="camera-button" title="Upload Image">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                        </svg>
-                    </button>
-                </div>
-                <input type="file" id="file-input" class="hidden" accept="image/*">
-            </div>
-            
-            <div class="text-center text-amber-200/50 font-semibold italic py-2">--- OR Choose from Database ---</div>
+            <form id="scan-form" class="space-y-6">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="file-input-label bg-amber-900/40 border-amber-700/50 hover:bg-amber-800/40">
+                            <input
+                                type="file"
+                                id="file-input-capture"
+                                name="file-input-capture"
+                                accept="image/*"
+                                capture="environment" />
+                            <span class="flex items-center justify-center text-amber-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                                Capture Live Photo
+                            </span>
+                        </label>
+                    </div>
 
-             <div class="mb-6">
-                <label class="block text-sm font-medium text-amber-200/80 mb-2">Select Common Food</label>
-                <select id="manual-food-select" class="glass-input w-full" onchange="handleManualSelection(this.value)">
-                    <option value="">Select a common food item...</option>
-                    <option value="Raw Gala Apple, large size">Gala Apple</option>
-                    <option value="Medium Ripe Banana">Banana</option>
-                    <option value="Raw Broccoli florets">Broccoli</option>
-                    <option value="Whole Avocado">Avocado</option>
-                    <option value="Sweet Potato, cooked">Sweet Potato</option>
-                    <option value="Raw Spinach Leaves">Spinach</option>
-                    <option value="Raw Chicken Breast, 100g">Chicken Breast (Raw)</option>
-                    <option value="Cooked Brown Rice, 100g">Brown Rice (Cooked)</option>
-                </select>
-            </div>
+                    <div>
+                        <label class="file-input-label">
+                            <input
+                                type="file"
+                                id="file-input-upload"
+                                name="file-input-upload"
+                                accept="image/*"
+                            />
+                            <span class="flex items-center justify-center text-amber-200/80">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.2 15V8c0-.7-.6-1.2-1.2-1.2H16l-3.2-3.8c-.3-.3-.7-.5-1.2-.5h-3.2c-.4 0-.8.2-1.2.5L4.8 6.8H2.8c-.7 0-1.2.6-1.2 1.2v7c0 .7.6 1.2 1.2 1.2h18.4c.7 0 1.2-.6 1.2-1.2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                                Upload Image
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="text-center text-amber-200/50 font-semibold italic py-2">--- OR Choose from Database ---</div>
 
-            <button type="button" id="analyze-button" class="w-full luxury-button text-lg disabled:opacity-50" disabled>
-                Run Multimodal AI Analysis
-            </button>
+                 <div>
+                    <label class="block text-sm font-medium text-amber-200/80 mb-2">Select Common Food</label>
+                    <select id="manual-food-select" class="glass-input-enhanced w-full">
+                        <option value="">Select a common food item...</option>
+                        <option value="Raw Gala Apple, large size">Gala Apple</option>
+                        <option value="Medium Ripe Banana">Banana</option>
+                        <option value="Raw Broccoli florets">Broccoli</option>
+                        <option value="Whole Avocado">Avocado</option>
+                        <option value="Sweet Potato, cooked">Sweet Potato</option>
+                        <option value="Raw Spinach Leaves">Spinach</option>
+                        <option value="Raw Chicken Breast, 100g">Chicken Breast (Raw)</option>
+                        <option value="Cooked Brown Rice, 100g">Brown Rice (Cooked)</option>
+                    </select>
+                </div>
+
+                <button type="submit" id="analyze-button" class="w-full luxury-button text-lg">
+                    Run Multimodal AI Analysis
+                </button>
+            </form>
 
             <div id="loading-indicator" class="hidden text-center py-8">
                 <div class="inline-flex items-center justify-center p-4 bg-amber-900/20 rounded-full mb-4">
@@ -991,7 +665,7 @@
             <div id="result-card" class="hidden mt-6 p-6 luxury-card">
                 <h4 id="food-name" class="text-xl font-bold text-amber-300 mb-2"></h4>
                 <p class="text-sm text-amber-200/70">AI Confidence: <span id="confidence" class="text-amber-400 font-semibold"></span>%</p>
-                <p class="text-sm text-amber-200/60 border-b border-amber-800/30 pb-3 mb-3">Base Nutrients per 100g: <span id="base-kcal" class="text-amber-300"></span> kcal</p>
+                <p class="text-sm text-amber-200/60 border-b border-amber-800/30 pb-3 mb-3">Base Nutrients per 100g: <span id="base-kcal" class="text-amber-300"></span> kcal | <span id="base-fiber" class="text-amber-300"></span>g Fiber</p>
                 
                 <div class="flex flex-col sm:flex-row items-center justify-between mt-4 space-y-4 sm:space-y-0">
                     <div class="flex items-center">
@@ -1013,17 +687,15 @@
                     </p>
                 </div>
             </div>
+            
+            <button id="close-modal" class="mt-6 w-full py-3 glass-input text-amber-200/80 hover:text-amber-300 rounded-xl text-sm font-medium transition-colors">
+                Close
+            </button>
         </div>
     </div>
     
-    <div id="goals-modal" class="modal-backdrop hidden">
-        <div class="close-modal-area" id="close-goals-backdrop"></div>
-        <div class="luxury-modal p-8 w-full max-w-lg relative">
-            <button id="close-goals-button" class="absolute top-4 right-4 text-amber-200/70 hover:text-amber-300 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
+    <div id="goals-modal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 hidden">
+        <div class="luxury-modal p-8 w-full max-w-lg">
             <h3 class="text-3xl font-bold mb-6 gold-gradient font-serif text-center">Set Your Daily Targets</h3>
             <form id="goals-form" class="space-y-5">
                 <div>
@@ -1044,31 +716,22 @@
                 </div>
                 <button type="submit" class="w-full luxury-button text-lg mt-4">Save Goals</button>
             </form>
+            <button id="close-goals-modal" class="mt-4 w-full py-3 glass-input text-amber-200/80 hover:text-amber-300 rounded-xl text-sm font-medium transition-colors">
+                Cancel
+            </button>
         </div>
     </div>
 
-    <div id="message-modal" class="modal-backdrop hidden">
-        <div class="close-modal-area" id="close-message-backdrop"></div>
-        <div class="luxury-modal p-8 w-full max-w-sm text-center relative">
-            <button onclick="closeModal('message-modal')" class="absolute top-4 right-4 text-amber-200/70 hover:text-amber-300 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
+    <div id="message-modal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 hidden">
+        <div class="luxury-modal p-8 w-full max-w-sm text-center">
             <h4 id="message-title" class="text-2xl font-bold text-amber-300 mb-4"></h4>
             <p id="message-content" class="text-amber-200/70 mb-6"></p>
             <button onclick="closeModal('message-modal')" class="w-full luxury-button">Got it!</button>
         </div>
     </div>
 
-    <div id="journal-modal" class="modal-backdrop hidden">
-        <div class="close-modal-area" id="close-journal-backdrop"></div>
-        <div class="luxury-modal p-8 w-full max-w-lg relative">
-            <button onclick="closeModal('journal-modal')" class="absolute top-4 right-4 text-amber-200/70 hover:text-amber-300 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
+    <div id="journal-modal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 hidden">
+        <div class="luxury-modal p-8 w-full max-w-lg">
             <h3 class="text-3xl font-bold mb-6 gold-gradient font-serif text-center">Gratitude Journal</h3>
             <textarea id="journal-input" class="glass-input w-full h-40" placeholder="What 3 things are you thankful for today?"></textarea>
             <button id="journal-save-btn" class="w-full luxury-button mt-6">Save Entry</button>
@@ -1076,17 +739,12 @@
             <div class="glass-input min-h-[80px]">
                 <p id="journal-display" class="text-amber-200/60 italic">No previous entry found.</p>
             </div>
+            <button onclick="closeModal('journal-modal')" class="mt-6 w-full py-3 glass-input text-amber-200/80 hover:text-amber-300 rounded-xl text-sm font-medium transition-colors">Close</button>
         </div>
     </div>
 
-    <div id="mood-modal" class="modal-backdrop hidden">
-        <div class="close-modal-area" id="close-mood-backdrop"></div>
-        <div class="luxury-modal p-8 w-full max-w-lg text-center relative">
-            <button onclick="closeModal('mood-modal')" class="absolute top-4 right-4 text-amber-200/70 hover:text-amber-300 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
+    <div id="mood-modal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 hidden">
+        <div class="luxury-modal p-8 w-full max-w-lg text-center">
             <h3 class="text-3xl font-bold mb-6 gold-gradient font-serif">Track Your Mood</h3>
             <div id="mood-options" class="flex justify-around space-x-3 mb-8">
                 <button data-mood="Happy" class="mood-option text-4xl">😊</button>
@@ -1099,32 +757,17 @@
                 <p class="text-lg font-semibold text-amber-200">Today's Mood:</p>
                 <p id="current-mood-display" class="text-xl font-bold text-amber-300 mt-2"><span id="mood-value">Not Logged</span></p>
             </div>
+            <button onclick="closeModal('mood-modal')" class="mt-6 w-full py-3 glass-input text-amber-200/80 hover:text-amber-300 rounded-xl text-sm font-medium transition-colors">Close</button>
         </div>
     </div>
 
     <script>
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyC6NBXcPnu4Ml_UQEUXuTdKi-C3n2RmWX0",
-            authDomain: "eatsence-ai.firebaseapp.com",
-            projectId: "eatsence-ai",
-            storageBucket: "eatsence-ai.firebasestorage.app",
-            messagingSenderId: "1089800317335",
-            appId: "1:1089800317335:web:16c8dbcd3e70db5f603cd2",
-            measurementId: "G-WCDDD23YFL"
-        };
-
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-        const googleProvider = new firebase.auth.GoogleAuthProvider();
-
         // --- Global Constants and Initial State ---
-        const LOCAL_STORAGE_KEY = 'eatsence_daily_log';
-        const JOURNAL_KEY = 'eatsence_journal';
-        const MOOD_KEY = 'eatsence_mood';
-        const WATER_KEY = 'eatsence_water';
+        const LOCAL_STORAGE_KEY = 'nutrisight_daily_log';
+        const JOURNAL_KEY = 'nutrisight_journal';
+        const MOOD_KEY = 'nutrisight_mood';
+        const WATER_KEY = 'nutrisight_water';
+        const USERNAME_KEY = 'nutrisight_username';
         const CIRCUMFERENCE = 2 * Math.PI * 100;
         
         const initialLog = {
@@ -1135,305 +778,11 @@
         };
 
         let currentAnalysis = null;
-        let currentUser = null;
-        let cameraStream = null;
-        let currentCamera = 'environment';
-        let capturedImageFile = null; 
-        let isSigningUp = false; // NEW: Track sign-up state
+        // NOTE: The API key is stored here but should be handled securely in a real application.
+        const apiKey = "AIzaSyAqjqStqnVctFq3BRs6pFEq9t9iNxlY-uY"; 
 
+        // --- Local Storage Persistence (The Sticky State Logic) ---
 
-        // --- Authentication Functions (MODIFIED) ---
-        
-        function handleSuccessfulLogin(user) {
-            currentUser = user;
-            const displayName = user.displayName || document.getElementById('display-name-input')?.value.trim() || user.email.split('@')[0];
-            const enableEmailReports = document.getElementById('email-reports-toggle')?.checked ?? true; 
-            
-            // 1. Update user profile in Firebase with displayName
-            const userRef = db.collection('users').doc(user.uid);
-            userRef.set({
-                email: user.email,
-                enableEmailReports: enableEmailReports,
-                lastLogin: new Date(),
-                displayName: displayName 
-            }, { merge: true }).then(() => {
-                // 2. Update the user object for immediate use in the app
-                user.displayName = displayName;
-                
-                // 3. Start the application flow
-                showWelcomeAnimation();
-            }).catch(error => {
-                console.error("Error setting user display name:", error);
-                showWelcomeAnimation(); // Proceed even if Firestore update fails
-            });
-        }
-
-        function handleLogin(email, password, enableEmailReports) {
-            document.getElementById('login-error').classList.add('hidden');
-            showLoading(isSigningUp ? "Creating account..." : "Signing in...");
-            
-            if (isSigningUp) {
-                const displayName = document.getElementById('display-name-input').value.trim();
-                if (!displayName) {
-                    hideLoading();
-                    document.getElementById('login-error').textContent = "Please enter your name.";
-                    document.getElementById('login-error').classList.remove('hidden');
-                    return;
-                }
-                
-                auth.createUserWithEmailAndPassword(email, password)
-                    .then((userCredential) => {
-                        // Set the displayName property on the Firebase user object
-                        userCredential.user.updateProfile({ displayName: displayName })
-                        .then(() => handleSuccessfulLogin(userCredential.user))
-                        .catch((error) => {
-                            console.error("Error updating profile on signup:", error);
-                            handleSuccessfulLogin(userCredential.user); // Proceed anyway
-                        });
-                    })
-                    .catch((error) => {
-                        hideLoading();
-                        document.getElementById('login-error').textContent = error.message;
-                        document.getElementById('login-error').classList.remove('hidden');
-                    });
-            } else {
-                 auth.signInWithEmailAndPassword(email, password)
-                    .then((userCredential) => {
-                        handleSuccessfulLogin(userCredential.user);
-                    })
-                    .catch((error) => {
-                        hideLoading();
-                        document.getElementById('login-error').textContent = error.message;
-                        document.getElementById('login-error').classList.remove('hidden');
-                    });
-            }
-        }
-
-        function signInWithGoogle() {
-            showLoading("Connecting with Google...");
-            auth.signInWithPopup(googleProvider)
-                .then((result) => {
-                    handleSuccessfulLogin(result.user);
-                })
-                .catch((error) => {
-                    hideLoading();
-                    const errorMessage = error.message;
-                    document.getElementById('login-error').textContent = `Google Sign-in Error: ${errorMessage}`;
-                    document.getElementById('login-error').classList.remove('hidden');
-                    console.error("Google Auth Error:", error.code, errorMessage);
-                });
-        }
-        
-        // MODIFIED: Simplified and reversed logic for sign-up toggle
-        function showSignup() {
-            isSigningUp = !isSigningUp;
-            const loginForm = document.getElementById('login-form');
-            const displayNameGroup = document.getElementById('username-input-group');
-            const toggleLink = loginForm.querySelector('a');
-            const submitButton = loginForm.querySelector('button');
-
-            if (isSigningUp) {
-                // Switch to Sign Up mode
-                displayNameGroup.classList.remove('hidden');
-                submitButton.textContent = "Create Account";
-                toggleLink.textContent = "Sign in";
-            } else {
-                // Switch to Sign In mode
-                displayNameGroup.classList.add('hidden');
-                submitButton.textContent = "Sign In";
-                toggleLink.textContent = "Sign up";
-            }
-        }
-        
-        // END MODIFIED AUTH
-
-        function showWelcomeAnimation() {
-            document.getElementById('login-flow-container').classList.add('hidden');
-            document.getElementById('welcome-animation').classList.remove('hidden');
-            
-            // After animation, show main app
-            setTimeout(() => {
-                document.getElementById('welcome-animation').classList.add('fade-out');
-                setTimeout(() => {
-                    document.getElementById('main-app').classList.remove('hidden');
-                    initializeApp();
-                    hideLoading();
-                }, 1000);
-            }, 3000);
-        }
-
-        function logout() {
-            showLoading("Signing out...");
-            auth.signOut().then(() => {
-                currentUser = null;
-                document.getElementById('main-app').classList.add('hidden');
-                document.getElementById('login-flow-container').classList.remove('hidden');
-                document.getElementById('login-screen').classList.remove('hidden');
-                document.getElementById('welcome-animation').classList.remove('fade-out'); // Reset animation state
-                document.getElementById('login-error').classList.add('hidden');
-                // Ensure login view is reset to Sign In mode
-                isSigningUp = true; // Temporary set to trigger false case next
-                showSignup(); // This call will flip it back to Sign In mode
-                hideLoading();
-            });
-        }
-
-        // --- Loading Functions (Unchanged) ---
-        function showLoading(message = "Loading...") {
-            document.getElementById('loading-text').textContent = message;
-            document.getElementById('loading-overlay').classList.remove('hidden');
-        }
-
-        function hideLoading() {
-            document.getElementById('loading-overlay').classList.add('hidden');
-        }
-
-        // --- Email Report Function (Unchanged) ---
-        async function sendDailyReport() {
-            if (!currentUser) {
-                showSimpleMessage("Authentication Required", "Please log in to send reports.", 'red-400');
-                return;
-            }
-
-            showLoading("Sending daily report...");
-
-            try {
-                // For demo purposes, we'll use a simulated email send
-                // In production, you would call a Cloud Function
-                const log = getLog();
-                const totalKcal = calculateTotal(log, 'kcal');
-                const targetKcal = log.target_kcal || initialLog.target_kcal;
-                const kcalPercentage = Math.min(100, (totalKcal / targetKcal) * 100);
-                
-                // Simulate API call delay
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                
-                // Save email log to Firestore
-                await db.collection('email_logs').add({
-                    userId: currentUser.uid,
-                    email: currentUser.email,
-                    type: 'daily_report',
-                    sentAt: new Date(),
-                    success: true,
-                    data: {
-                        calories: totalKcal,
-                        protein: calculateTotal(log, 'protein'),
-                        carbs: calculateTotal(log, 'carbs'),
-                        fat: calculateTotal(log, 'fat'),
-                        targetCalories: targetKcal
-                    }
-                });
-
-                hideLoading();
-                showSimpleMessage(
-                    "Report Sent Successfully", 
-                    `Your daily nutrition report has been sent to ${currentUser.email}\n\nToday's Summary:\n• Calories: ${totalKcal.toFixed(0)}/${targetKcal} (${kcalPercentage.toFixed(0)}%)\n• Protein: ${calculateTotal(log, 'protein').toFixed(1)}g\n• Carbs: ${calculateTotal(log, 'carbs').toFixed(1)}g\n• Fat: ${calculateTotal(log, 'fat').toFixed(1)}g`,
-                    'green-400'
-                );
-                
-            } catch (error) {
-                hideLoading();
-                console.error('Error sending report:', error);
-                showSimpleMessage(
-                    "Report Failed", 
-                    "Unable to send daily report. Please try again later.",
-                    'red-400'
-                );
-            }
-        }
-
-        // --- REBUILT LOGIC: Camera Functions (Unchanged) ---
-        async function startCamera() {
-            const videoElement = document.getElementById('camera-preview');
-            const canvasElement = document.getElementById('captured-image-preview');
-            
-            // Hide canvas, show video for live stream
-            videoElement.classList.remove('hidden');
-            canvasElement.classList.add('hidden');
-            document.getElementById('reset-camera-view').classList.add('hidden');
-            document.getElementById('capture-button').disabled = false;
-            
-            if (cameraStream) stopCamera(); // Stop existing stream first
-
-            try {
-                const constraints = {
-                    video: { 
-                        facingMode: currentCamera,
-                        width: { ideal: 1280 },
-                        height: { ideal: 720 }
-                    }
-                };
-                
-                cameraStream = await navigator.mediaDevices.getUserMedia(constraints);
-                videoElement.srcObject = cameraStream;
-                // Enable manual and capture only when camera starts successfully
-                document.getElementById('analyze-button').disabled = true;
-                document.getElementById('manual-food-select').value = '';
-                capturedImageFile = null;
-
-            } catch (error) {
-                console.warn("Error accessing camera. Falling back to image upload/manual input.", error);
-                // Disable capture and switch if camera fails
-                document.getElementById('capture-button').disabled = true;
-                document.getElementById('switch-camera').disabled = true;
-                videoElement.style.background = '#333';
-                showSimpleMessage("Camera Blocked", "Camera access denied. Please use the Upload or Manual Select options.", 'red-400');
-                // Enable manual select as default input
-                document.getElementById('analyze-button').disabled = false; 
-            }
-        }
-
-        function stopCamera() {
-            if (cameraStream) {
-                cameraStream.getTracks().forEach(track => track.stop());
-                cameraStream = null;
-            }
-        }
-
-        function switchCamera() {
-            currentCamera = currentCamera === 'environment' ? 'user' : 'environment';
-            stopCamera();
-            startCamera();
-        }
-
-        function captureImage() {
-            const video = document.getElementById('camera-preview');
-            const canvas = document.getElementById('captured-image-preview');
-            const context = canvas.getContext('2d');
-
-            // Set canvas size to video frame size
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            
-            // Draw the current video frame onto the canvas
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-            
-            // Convert to blob and store as a File
-            canvas.toBlob((blob) => {
-                capturedImageFile = new File([blob], 'captured-food.jpg', { type: 'image/jpeg' });
-                // Hide video, show canvas preview
-                video.classList.add('hidden');
-                canvas.classList.remove('hidden');
-                document.getElementById('reset-camera-view').classList.remove('hidden');
-                document.getElementById('analyze-button').disabled = false; // Enable analysis button
-
-            }, 'image/jpeg');
-
-            stopCamera(); // Stop the stream after capturing
-        }
-        
-        function resetCameraView() {
-            capturedImageFile = null;
-            document.getElementById('captured-image-preview').classList.add('hidden');
-            document.getElementById('result-card').classList.add('hidden');
-            document.getElementById('manual-food-select').value = '';
-            document.getElementById('analyze-button').textContent = 'Run Multimodal AI Analysis';
-            document.getElementById('analyze-button').disabled = true;
-            startCamera();
-        }
-        // --- END REBUILT CAMERA FUNCTIONS ---
-
-        // --- Nutrition Data Management (Unchanged core) ---
         function getLog() {
             try {
                 const storedLog = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -1443,10 +792,15 @@
                 if (log.date !== new Date().toDateString()) {
                     return {
                         ...initialLog,
-                        targets: log.targets || initialLog.targets,
-                        target_kcal: log.targets?.kcal || log.target_kcal || 2200,
+                        targets: log.targets || initialLog.targets, // Keep user-set targets
+                        target_kcal: log.targets?.kcal || log.target_kcal || 2200, // Re-use old total kcal target
                         date: new Date().toDateString()
                     };
+                }
+                // Ensure targets structure is correct on load
+                if (!log.targets) {
+                    log.targets = initialLog.targets;
+                    log.targets.kcal = log.target_kcal;
                 }
                 return log;
 
@@ -1459,134 +813,134 @@
         function saveLog(log) {
             try {
                 localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(log));
-                
-                // Also save to Firestore if user is logged in
-                if (currentUser) {
-                    saveNutritionDataToFirestore(log);
-                }
             } catch (error) {
                 console.error("Error saving log to localStorage.", error);
             }
         }
 
-        async function saveNutritionDataToFirestore(log) {
-            if (!currentUser) return;
-
-            const today = new Date().toISOString().split('T')[0];
-            const totalKcal = calculateTotal(log, 'kcal');
-            const totalProtein = calculateTotal(log, 'protein');
-            const totalFat = calculateTotal(log, 'fat');
-            const totalCarbs = calculateTotal(log, 'carbs');
-            
-            // Get water intake and mood from localStorage
-            const waterIntake = localStorage.getItem(WATER_KEY) || 0;
-            const mood = localStorage.getItem(MOOD_KEY) || 'Not recorded';
-
-            const nutritionData = {
-                totalCalories: totalKcal,
-                protein: totalProtein,
-                carbs: totalCarbs,
-                fat: totalFat,
-                waterIntake: parseInt(waterIntake),
-                mood: mood,
-                goals: {
-                    calories: log.target_kcal,
-                    protein: log.targets.protein,
-                    carbs: log.targets.carbs,
-                    fat: log.targets.fat
-                },
-                lastUpdated: new Date()
-            };
-
-            try {
-                await db.collection('nutrition_logs')
-                    .doc(currentUser.uid)
-                    .collection('daily_logs')
-                    .doc(today)
-                    .set(nutritionData, { merge: true });
-            } catch (error) {
-                console.error('Error saving nutrition data:', error);
-            }
-        }
+        // --- Data Calculation Utilities ---
 
         function calculateTotal(log, key) {
             return log.entries.reduce((sum, entry) => sum + (entry[key] || 0), 0);
         }
+        
+        /** Converts a File object to a Base64 string for API submission. */
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result.split(',')[1]); // Only data part
+                reader.onerror = error => reject(error);
+                reader.readAsDataURL(file);
+            });
+        }
 
-        // --- AI Analysis Functions (Mock Data) (Unchanged) ---
+        // --- Core AI Analysis Logic (Unified Input) ---
+        
+        /** * Runs AI analysis using either an image file or a manual text prompt. 
+         * FIX: Corrected API JSON structure from 'config' to 'generationConfig' and 'systemInstruction'.
+         */
         async function runAnalysis(input) {
             const isFile = input instanceof File;
+            let imagePart = null;
             
-            // Show analysis delay
-            await new Promise(resolve => setTimeout(resolve, isFile ? 2500 : 1500));
-            
+            let textQuery = "Identify the food item and provide its nutritional breakdown per 100g. If it is a fruit, vegetable, or common whole food, also include a practical, common portion size (in grams) and its calculated nutritional breakdown for that suggested portion. Then, suggest one high-fiber, low-fat meal or usage tip based on a fitness diet. Respond in JSON format.";
+
             if (isFile) {
-                    // Simulate image analysis result
-                    return getMockNutritionData("captured food");
+                const base64Image = await fileToBase64(input);
+                imagePart = { inlineData: { mimeType: input.type, data: base64Image } };
             } else if (typeof input === 'string' && input.length > 0) {
-                    // Simulate manual/database result
-                    return getMockNutritionData(input);
+                textQuery = `Analyze the nutritional data for the following specific food item per 100g: ${input}. ${textQuery}`;
             } else {
-                throw new Error("No food item was provided for analysis.");
+                throw new Error("Invalid input type provided to AI analysis.");
             }
-        }
+            
+            const systemPrompt = "You are a specialized food AI that identifies fresh produce and common ingredients, providing precise nutritional facts per 100g and one single, brief recipe or usage idea suitable for a user tracking fitness macros. Provide the raw data for the following categories: food_name (string, exact), confidence_score (number 90-100, if text input use 95), calories_kcal (number), protein_g (number), fat_g (number), carbohydrates_g (number), fiber_g (number), suggested_portion_g (number, provide 100 if a portion is complex to estimate), suggested_use (string). Ensure all numbers are provided as floating-point values for accurate calculation.";
+            
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
 
-        function getMockNutritionData(foodName) {
-            const foodDatabase = {
-                "apple": { calories: 52, protein: 0.3, fat: 0.2, carbs: 14, tip: "Apples are rich in fiber; great for a mid-morning snack!" },
-                "banana": { calories: 89, protein: 1.1, fat: 0.3, carbs: 23, tip: "Bananas are excellent post-workout fuel due to their potassium content." },
-                "broccoli": { calories: 34, protein: 2.8, fat: 0.4, carbs: 7, tip: "Broccoli is packed with Vitamin C and K. Steam lightly to retain nutrients." },
-                "chicken": { calories: 165, protein: 31, fat: 3.6, carbs: 0, tip: "Lean protein source! Pair with a carb for a balanced meal." },
-                "rice": { calories: 130, protein: 2.7, fat: 0.3, carbs: 28, tip: "Brown rice provides sustained energy. Portion control is key for carb goals." },
-                "avocado": { calories: 160, protein: 2, fat: 15, carbs: 9, tip: "High in healthy fats! A great addition to salads or toast." },
-                "sweet potato": { calories: 86, protein: 1.6, fat: 0.1, carbs: 20, tip: "A source of complex carbohydrates and Vitamin A. Ideal pre-workout fuel." },
-                "spinach": { calories: 23, protein: 2.9, fat: 0.4, carbs: 3.6, tip: "Spinach is rich in iron and folates. Mix into a smoothie or stir-fry." },
-                // Default fallback for captured images/unknown items
-                "captured food": { calories: 180, protein: 10, fat: 8, carbs: 20, tip: "AI analyzed the image. Double-check the portion size for accuracy." }
-            };
-            
-            const searchTerm = foodName.toLowerCase();
-            let matchedFood = "Unidentified Meal";
-            let nutrition = foodDatabase["captured food"]; // Default to generic captured food
-            
-            for (const [foodKey, data] of Object.entries(foodDatabase)) {
-                if (searchTerm.includes(foodKey)) {
-                    matchedFood = foodName; // Use the actual name from the option/input
-                    nutrition = data;
-                    break;
+            const contents = [{ 
+                parts: [
+                    { text: textQuery },
+                ].concat(imagePart ? [imagePart] : []) 
+            }];
+
+            const payload = {
+                contents: contents,
+                // FIX: System Instruction moved out of 'config'
+                systemInstruction: { parts: [{ text: systemPrompt }] }, 
+                // FIX: Configuration moved to 'generationConfig'
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "OBJECT",
+                        properties: {
+                            "food_name": { "type": "STRING" },
+                            "confidence_score": { "type": "NUMBER" },
+                            "calories_kcal": { "type": "NUMBER" },
+                            "protein_g": { "type": "NUMBER" },
+                            "fat_g": { "type": "NUMBER" },
+                            "carbohydrates_g": { "type": "NUMBER" },
+                            "fiber_g": { "type": "NUMBER" }, 
+                            "suggested_portion_g": { "type": "NUMBER" }, 
+                            "suggested_use": { "type": "STRING" }
+                        },
+                        required: ["food_name", "confidence_score", "calories_kcal", "protein_g", "fat_g", "carbohydrates_g", "fiber_g", "suggested_portion_g", "suggested_use"]
+                    }
                 }
+            };
+
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(`API Error: ${errorData.error ? errorData.error.message : 'Unknown error'}`);
+            }
+
+            const result = await response.json();
+            
+            if (result.candidates && result.candidates.length > 0 && result.candidates[0].content.parts[0].text) {
+                const jsonText = result.candidates[0].content.parts[0].text;
+                // Robust JSON parsing to handle possible code fences
+                const cleanJsonMatch = jsonText.match(/```json\n([\s\S]*)\n```/);
+                const cleanJson = cleanJsonMatch ? cleanJsonMatch[1] : jsonText.replace(/```json|```/g, '').trim(); 
+                
+                const parsedData = JSON.parse(cleanJson);
+                
+                return { ...parsedData, id: Date.now() };
+
             }
             
-            return {
-                food_name: matchedFood.split(',')[0].trim(),
-                confidence_score: foodName === "Unidentified Meal" ? 75 : (85 + Math.floor(Math.random() * 15)),
-                calories_kcal: nutrition.calories,
-                protein_g: nutrition.protein,
-                fat_g: nutrition.fat,
-                carbohydrates_g: nutrition.carbs,
-                suggested_use: nutrition.tip,
-                id: Date.now()
-            };
+            throw new Error("AI response was empty or malformed.");
         }
 
-        // --- UI Rendering Functions (MODIFIED for Username) ---
+        // --- UI Rendering Helpers ---
+
+        function updateMacroProgress(containerId, total, target) {
+            const percentage = target > 0 ? Math.min(100, (total / target) * 100) : 0;
+            const progressBar = document.querySelector(`#${containerId} .macro-progress`);
+            progressBar.style.setProperty('--progress-width', `${percentage}%`);
+            
+            document.getElementById(`${containerId.split('-')[0]}-value`).textContent = total.toFixed(1);
+        }
+
         function renderDashboard(log) {
             const totalKcal = calculateTotal(log, 'kcal');
+            const totalProtein = calculateTotal(log, 'protein');
+            const totalFat = calculateTotal(log, 'fat');
+            const totalCarbs = calculateTotal(log, 'carbs');
             const targetKcal = log.target_kcal || initialLog.target_kcal;
             const remainingKcal = Math.max(0, targetKcal - totalKcal);
             
-            // UPDATE: Dynamic Username Display
-            const displayName = currentUser.displayName || currentUser.email.split('@')[0];
-            document.getElementById('username-display').textContent = displayName;
-            document.getElementById('header-username').textContent = displayName;
-            document.getElementById('user-initial').textContent = displayName.charAt(0).toUpperCase();
-
-            // Update Summary Card
+            // 1. Update Summary Card
             document.getElementById('summary-target').innerHTML = `${targetKcal.toFixed(0)} <span class="text-base text-amber-200/60">kcal</span>`;
             document.getElementById('summary-remaining').innerHTML = `${remainingKcal.toFixed(0)} <span class="text-base text-cyan-200/60">kcal</span>`;
             document.getElementById('summary-remaining').className = `text-3xl font-extrabold ${remainingKcal > 100 ? 'text-cyan-300' : 'text-amber-400'}`;
 
-            // Kcal Ring Update
+            // 2. Kcal Ring Update
             const kcalPercentage = Math.min(100, (totalKcal / targetKcal) * 100);
             const offset = CIRCUMFERENCE - (kcalPercentage / 100) * CIRCUMFERENCE;
             
@@ -1595,7 +949,8 @@
             ring.setAttribute('stroke-dashoffset', offset);
             
             const colorClass = kcalPercentage > 95 ? 'text-red-500' : 'text-amber-500';
-            ring.setAttribute('stroke', colorClass); // Setting stroke directly for simplicity
+            ring.classList.remove('text-amber-500', 'text-red-500');
+            ring.classList.add(colorClass.replace('text-', ''));
             
             document.getElementById('dashboard-date').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
             document.getElementById('kcal-consumed').textContent = totalKcal.toFixed(1);
@@ -1603,38 +958,24 @@
             document.getElementById('kcal-percentage').textContent = `${kcalPercentage.toFixed(0)}% Complete`;
             document.getElementById('kcal-percentage').className = `text-sm mt-2 font-semibold ${colorClass}`;
 
-            // Macro Cards Update
-            updateMacroProgress('protein-card', calculateTotal(log, 'protein'), log.targets.protein);
-            updateMacroProgress('fat-card', calculateTotal(log, 'fat'), log.targets.fat);
-            updateMacroProgress('carbs-card', calculateTotal(log, 'carbs'), log.targets.carbs);
+            // 3. Macro Cards Update
+            updateMacroProgress('protein-card', totalProtein, log.targets.protein);
+            updateMacroProgress('fat-card', totalFat, log.targets.fat);
+            updateMacroProgress('carbs-card', totalCarbs, log.targets.carbs);
             
             // Update target displays
             document.getElementById('protein-target').textContent = log.targets.protein;
             document.getElementById('fat-target').textContent = log.targets.fat;
             document.getElementById('carbs-target').textContent = log.targets.carbs;
 
-            // Log History Update
+            // 4. Log History Update
             renderLogHistory(log.entries);
             
-            // Water Tracker Update
-            const waterLog = localStorage.getItem(WATER_KEY);
-            const currentWater = waterLog ? parseInt(waterLog) : 0;
-            const waterPercentage = Math.min(100, (currentWater / 8) * 100);
+            // 5. Water Tracker Update
+            const currentWater = localStorage.getItem(WATER_KEY) ? parseInt(localStorage.getItem(WATER_KEY)) : 0;
+            const waterTarget = 8;
+            const waterPercentage = Math.min(100, (currentWater / waterTarget) * 100);
             document.getElementById('water-tracker-btn').textContent = `Water Tracker: ${waterPercentage.toFixed(0)}% (${currentWater} cups)`;
-        }
-        // END MODIFIED RENDER
-
-        function updateMacroProgress(containerId, total, target) {
-            const percentage = target > 0 ? Math.min(100, (total / target) * 100) : 0;
-            const progressBar = document.querySelector(`#${containerId} .macro-progress`);
-            if (progressBar) {
-                progressBar.style.setProperty('--progress-width', `${percentage}%`);
-            }
-            
-            const valueElement = document.getElementById(`${containerId.split('-')[0]}-value`);
-            if (valueElement) {
-                valueElement.textContent = total.toFixed(1);
-            }
         }
 
         function renderLogHistory(entries) {
@@ -1652,13 +993,13 @@
 
             entries.slice().reverse().forEach(entry => { 
                 const entryElement = document.createElement('div');
-                entryElement.className = "food-log-item";
+                entryElement.className = "food-log-item relative z-10";
                 entryElement.innerHTML = `
                     <div class="flex items-center justify-between">
                         <div class="flex-1">
                             <p class="font-semibold text-lg text-amber-300">${entry.name}</p>
                             <p class="text-sm text-amber-200/60">
-                                ${entry.grams}g | P:${entry.protein.toFixed(1)}g C:${entry.carbs.toFixed(1)}g F:${entry.fat.toFixed(1)}g
+                                ${entry.grams}g | P:${entry.protein.toFixed(1)}g C:${entry.carbs.toFixed(1)}g F:${entry.fat.toFixed(1)}g | Fiber: ${entry.fiber ? entry.fiber.toFixed(1) : 0}g
                             </p>
                         </div>
                         <div class="text-xl font-bold text-white mr-4 flex items-center">
@@ -1682,39 +1023,47 @@
                 });
             });
         }
+        
+        // --- Modal & Form Handlers (Standard) ---
 
-        // --- Modal & Form Handlers (Unchanged) ---
         function openModal(modalId) {
             document.getElementById(modalId).classList.remove('hidden');
             if (modalId === 'scan-modal') {
-                document.getElementById('file-input').value = '';
+                // Clear all input types
+                document.getElementById('file-input-capture').value = '';
+                document.getElementById('file-input-upload').value = '';
                 document.getElementById('manual-food-select').value = '';
                 document.getElementById('result-card').classList.add('hidden');
                 document.getElementById('analyze-button').textContent = 'Run Multimodal AI Analysis';
-                document.getElementById('analyze-button').disabled = true; 
-                capturedImageFile = null; 
-                document.getElementById('captured-image-preview').classList.add('hidden'); 
-                startCamera();
+                document.getElementById('analyze-button').disabled = false;
             }
         }
-        
         function closeModal(modalId) {
             document.getElementById(modalId).classList.add('hidden');
-            if (modalId === 'scan-modal') {
-                stopCamera();
-            }
         }
 
-        // REBUILT LOGIC: Combined Analysis Handler (Unchanged)
-        async function handleAnalysis(inputSource) {
-            if (!inputSource && !capturedImageFile) {
-                showSimpleMessage("Input Required", "Please take/upload a photo or choose a food item.", 'amber-400');
+        // --- Core Logic for Modal Interaction ---
+
+        async function handleAnalysis(event) {
+            event.preventDefault();
+            
+            const manualSelect = document.getElementById('manual-food-select');
+            // Check for file inputs only when a file change event hasn't already triggered the analysis
+            
+            let file = document.getElementById('file-input-capture').files[0] || document.getElementById('file-input-upload').files[0];
+            const selectedFoodName = manualSelect.value;
+            
+            let inputSource;
+
+            if (file) {
+                inputSource = file; 
+            } else if (selectedFoodName) {
+                inputSource = selectedFoodName;
+            } else {
+                showSimpleMessage("Input Required", "Please take a photo, upload an image, or choose a food item from the list.", 'amber-400');
                 return;
             }
             
-            // Prioritize captured file, then uploaded file, then manual text
-            const finalInput = capturedImageFile || inputSource;
-
             const loading = document.getElementById('loading-indicator');
             const analyzeBtn = document.getElementById('analyze-button');
             const resultCard = document.getElementById('result-card');
@@ -1724,17 +1073,26 @@
             loading.classList.remove('hidden');
             analyzeBtn.textContent = 'Processing with AI...';
 
+            // Clear inputs right after capture/selection for clean slate
+            document.getElementById('file-input-capture').value = '';
+            document.getElementById('file-input-upload').value = '';
+            document.getElementById('manual-food-select').value = '';
+
             try {
-                const analysisData = await runAnalysis(finalInput);
+                const analysisData = await runAnalysis(inputSource);
                 currentAnalysis = analysisData;
 
+                // Populate Result Card
                 document.getElementById('food-name').textContent = analysisData.food_name;
                 document.getElementById('confidence').textContent = analysisData.confidence_score.toFixed(1);
                 document.getElementById('base-kcal').textContent = analysisData.calories_kcal.toFixed(1);
+                document.getElementById('base-fiber').textContent = analysisData.fiber_g.toFixed(1);
                 document.getElementById('suggested-use').textContent = analysisData.suggested_use;
                 
-                document.getElementById('portion-grams').value = 100;
-                updatePortionKcal(100);
+                // Set portion to suggested portion
+                const suggestedPortion = analysisData.suggested_portion_g || 100;
+                document.getElementById('portion-grams').value = suggestedPortion.toFixed(0);
+                updatePortionKcal(suggestedPortion);
 
                 resultCard.classList.remove('hidden');
                 analyzeBtn.textContent = 'Analysis Complete!';
@@ -1745,59 +1103,17 @@
                 document.getElementById('food-name').textContent = 'AI Error';
                 document.getElementById('confidence').textContent = '0.0';
                 document.getElementById('base-kcal').textContent = '0.0';
-                document.getElementById('suggested-use').textContent = error.message || 'Could not process the request. Try selecting a common food or a different image.';
+                document.getElementById('base-fiber').textContent = '0.0'; 
+                document.getElementById('suggested-use').textContent = error.message || 'Could not process the request. The API may have returned an error. Try again.';
                 analyzeBtn.textContent = 'Retry Analysis';
                 analyzeBtn.disabled = false;
 
             } finally {
                 loading.classList.add('hidden');
-                // Ensure button is ready for next analysis attempt
-                if (analyzeBtn.textContent !== 'Analysis Complete!') {
-                    analyzeBtn.disabled = false;
-                }
             }
         }
-
-        // REBUILT LOGIC: Manual Selection Helper (Unchanged)
-        function handleManualSelection(value) {
-            document.getElementById('file-input').value = ''; 
-            document.getElementById('captured-image-preview').classList.add('hidden'); 
-            document.getElementById('camera-preview').classList.remove('hidden'); 
-            document.getElementById('reset-camera-view').classList.add('hidden'); 
-            capturedImageFile = null; 
-            
-            if (value) {
-                stopCamera();
-                handleAnalysis(value);
-            } else {
-                 document.getElementById('result-card').classList.add('hidden');
-                 document.getElementById('analyze-button').textContent = 'Run Multimodal AI Analysis';
-                 document.getElementById('analyze-button').disabled = true;
-            }
-        }
-
-        // REBUILT LOGIC: Image Upload Handler (Unchanged)
-        function handleFileUpload(file) {
-            stopCamera();
-            capturedImageFile = file;
-            
-            const video = document.getElementById('camera-preview');
-            const canvas = document.getElementById('captured-image-preview');
-            const context = canvas.getContext('2d');
-            
-            const img = new Image();
-            img.onload = () => {
-                canvas.width = img.width;
-                canvas.height = img.height;
-                context.drawImage(img, 0, 0, canvas.width, canvas.height);
-                video.classList.add('hidden');
-                canvas.classList.remove('hidden');
-                document.getElementById('reset-camera-view').classList.remove('hidden');
-                document.getElementById('manual-food-select').value = '';
-                handleAnalysis(file);
-            };
-            img.src = URL.createObjectURL(file);
-        }
+        
+        // --- Goal Setting Logic ---
 
         function handleGoalSetting(event) {
             event.preventDefault();
@@ -1820,6 +1136,8 @@
             renderDashboard(log);
             closeModal('goals-modal');
         }
+        
+        // --- Portion Calculation Logic ---
 
         function updatePortionKcal(grams) {
             if (!currentAnalysis) return;
@@ -1830,26 +1148,29 @@
             document.getElementById('portion-kcal').textContent = portionKcal.toFixed(1);
             document.getElementById('log-button').textContent = `Log ${portionKcal.toFixed(1)} kcal to Diary`;
         }
+        
+        // --- Log Entry Logic ---
 
         function handleLogEntry() {
             if (!currentAnalysis) return;
 
-            const portionGrams = parseInt(document.getElementById('portion-grams').value) || 0;
+            const portionGrams = parseFloat(document.getElementById('portion-grams').value) || 0;
             if (portionGrams <= 0) {
                 console.warn("Portion size must be greater than 0.");
                 return;
             }
 
-            const kcalPer100g = currentAnalysis.calories_kcal;
+            const scaleFactor = portionGrams / 100;
             
             const newEntry = {
                 id: currentAnalysis.id,
                 name: currentAnalysis.food_name,
-                grams: portionGrams,
-                kcal: (kcalPer100g / 100) * portionGrams,
-                protein: ((currentAnalysis.protein_g / 100) * portionGrams),
-                fat: ((currentAnalysis.fat_g / 100) * portionGrams),
-                carbs: ((currentAnalysis.carbohydrates_g / 100) * portionGrams),
+                grams: portionGrams.toFixed(0),
+                kcal: (currentAnalysis.calories_kcal * scaleFactor),
+                protein: (currentAnalysis.protein_g * scaleFactor),
+                fat: (currentAnalysis.fat_g * scaleFactor),
+                carbs: (currentAnalysis.carbohydrates_g * scaleFactor),
+                fiber: (currentAnalysis.fiber_g * scaleFactor) || 0, 
             };
 
             const log = getLog();
@@ -1858,8 +1179,9 @@
             renderDashboard(log);
             closeModal('scan-modal');
         }
+        
+        // --- Sidebar & Utility Functions ---
 
-        // --- Sidebar Functions (Unchanged) ---
         function showSimpleMessage(title, content, color='amber-400') {
             document.getElementById('message-title').textContent = title;
             document.getElementById('message-content').textContent = content;
@@ -1888,11 +1210,26 @@
             }
         }
 
-        // 🧠 Mental Flow Functions (Unchanged)
-        function startMeditation() {
-            let seconds = 300;
-            showSimpleMessage("Meditation Started", `Focus on your breath for 5 minutes. Timer is running in the background.`);
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
             
+            if (sidebar.classList.contains('mobile-hidden')) {
+                sidebar.classList.remove('mobile-hidden');
+                sidebar.classList.add('mobile-open');
+                overlay.classList.add('active');
+            } else {
+                sidebar.classList.remove('mobile-open');
+                sidebar.classList.add('mobile-hidden');
+                overlay.classList.remove('active');
+            }
+        }
+
+        // --- Mental/Wellness Functions (Simplified for brevity, maintained in structure) ---
+        
+        function startMeditation() {
+            let seconds = 300; // 5 minutes
+            showSimpleMessage("Meditation Started", `Focus on your breath for 5 minutes. Timer is running in the background.`);
             const timer = setInterval(() => {
                 seconds--;
                 if (seconds <= 0) {
@@ -1903,43 +1240,31 @@
         }
 
         function showAffirmation() {
-            const affirmations = [
-                "I am strong, capable, and worthy of all good things.",
-                "My potential is limitless. I choose to be happy today.",
-                "I am in control of my choices and my feelings.",
-                "I trust my instincts and make wise decisions.",
-                "I release my doubts and welcome self-love and joy."
-            ];
+            const affirmations = ["I am strong, capable, and worthy of all good things.", "My potential is limitless. I choose to be happy today.", "I am in control of my choices and my feelings."];
             const affirmation = affirmations[Math.floor(Math.random() * affirmations.length)];
             showSimpleMessage("Daily Affirmation", affirmation, 'pink-400');
         }
         
-        // 📖 Journal Logic (Unchanged)
         document.addEventListener('DOMContentLoaded', () => {
              document.getElementById('journal-open-btn').addEventListener('click', () => {
-                 const entry = localStorage.getItem(JOURNAL_KEY) || "No entry saved for today.";
-                 document.getElementById('journal-display').textContent = entry;
-                 document.getElementById('journal-input').value = entry === "No entry saved for today." ? "" : entry;
-                 openModal('journal-modal');
-             });
+                const entry = localStorage.getItem(JOURNAL_KEY) || "No entry saved for today.";
+                document.getElementById('journal-display').textContent = entry;
+                document.getElementById('journal-input').value = entry === "No entry saved for today." ? "" : entry;
+                openModal('journal-modal');
+            });
 
-             document.getElementById('journal-save-btn').addEventListener('click', () => {
-                 const entry = document.getElementById('journal-input').value;
-                 if (entry.trim()) {
-                     localStorage.setItem(JOURNAL_KEY, entry.trim());
-                     showSimpleMessage("Journal Saved", "Your gratitude entry has been successfully logged!", 'amber-400');
-                     closeModal('journal-modal');
-                 } else {
-                     showSimpleMessage("Empty Entry", "Please write something before saving.", 'amber-400');
-                 }
-             });
+            document.getElementById('journal-save-btn').addEventListener('click', () => {
+                const entry = document.getElementById('journal-input').value;
+                if (entry.trim()) {
+                    localStorage.setItem(JOURNAL_KEY, entry.trim());
+                    showSimpleMessage("Journal Saved", "Your gratitude entry has been successfully logged!", 'amber-400');
+                    closeModal('journal-modal');
+                } else {
+                    showSimpleMessage("Empty Entry", "Please write something before saving.", 'amber-400');
+                }
+            });
         });
 
-        // 💪 Physical Balance Functions (Unchanged)
-        function planMeal() {
-            showSimpleMessage("AI Meal Planning", "Our AI is analyzing your nutrition goals to create a personalized meal plan. This feature requires additional setup.", 'amber-400');
-        }
-        
         function startWaterTracker() {
             const currentWater = localStorage.getItem(WATER_KEY) ? parseInt(localStorage.getItem(WATER_KEY)) : 0;
             const newWater = currentWater + 1;
@@ -1952,37 +1277,26 @@
             }
         }
 
-        function generateWorkout() {
-            const routine = "30-Min Full Body: 1. 10 Pushups, 2. 15 Squats, 3. 20 Lunges (each leg), 4. 45s Plank. Repeat 3 times. Rest 60s between sets.";
-            showSimpleMessage("Daily Workout", routine, 'amber-400');
-        }
+        function planMeal() { showSimpleMessage("AI Meal Planning", "Analyzing goals to create a personalized meal plan.", 'amber-400'); }
+        function generateWorkout() { showSimpleMessage("Daily Workout", "30-Min Full Body: Pushups, Squats, Lunges, Plank. Repeat 3x.", 'amber-400'); }
+        function postureAlert() { showSimpleMessage("Posture Check", "Straighten your back, roll your shoulders back, and stretch.", 'pink-400'); }
+        function startMoodMusic() { showSimpleMessage("Mood Music", "Playing relaxing, focus-enhancing ambient tracks.", 'blue-400'); }
+        function connectAndShare() { showSimpleMessage("Connect & Share", "Share a positive note with yourself instead!", 'amber-400'); }
+        function scheduleDay() { showSimpleMessage("Sample Daily Schedule", "Log meals, water, and mood checkpoints throughout the day.", 'blue-400'); }
+        function showReminders() { showSimpleMessage("Health Reminders", "Reminders set for Water, Posture, and Journaling.", 'amber-400'); }
+        function runChallenge() { showSimpleMessage("2-Day Challenge", "Log all meals, hit 8 cups water, and write 2 gratitude entries.", 'amber-400'); }
 
-        function postureAlert() {
-            showSimpleMessage("Posture Check", "Reminder: Straighten your back, roll your shoulders back, and take a deep breath. Stand up and stretch for 30 seconds!", 'pink-400');
-        }
-
-        // ❤️ Emotional Core Functions (Unchanged)
-        function startMoodMusic() {
-            showSimpleMessage("Mood Music", "Playing relaxing, focus-enhancing ambient tracks. (External player required to play sounds in this environment, but imagine calming sound waves!)", 'blue-400');
-        }
-
-        function connectAndShare() {
-            showSimpleMessage("Connect & Share", "This feature typically connects to an anonymous, positive community feed. (Not enabled in this environment). Share a positive note with yourself instead!", 'amber-400');
-        }
-        
-        // 🌤️ Mood Tracker Logic (Unchanged)
+        // Mood Tracker Logic (Simplified)
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('mood-tracker-btn').addEventListener('click', () => {
                 const mood = localStorage.getItem(MOOD_KEY) || "Not Logged";
                 document.getElementById('mood-value').textContent = mood;
-                
                 document.querySelectorAll('.mood-option').forEach(btn => {
                     btn.classList.remove('active');
                     if (btn.dataset.mood === mood) {
                         btn.classList.add('active');
                     }
                 });
-                
                 openModal('mood-modal');
             });
         });
@@ -1990,97 +1304,32 @@
         document.querySelectorAll('.mood-option').forEach(button => {
             button.addEventListener('click', (e) => {
                 const mood = e.currentTarget.dataset.mood;
-                
                 document.querySelectorAll('.mood-option').forEach(btn => {
                     btn.classList.remove('active');
                 });
                 e.currentTarget.classList.add('active');
-                
                 localStorage.setItem(MOOD_KEY, mood);
                 document.getElementById('mood-value').textContent = mood;
-                showSimpleMessage("Mood Logged", `You've logged your mood as ${mood}. We hope your day gets even better!`, 'pink-400');
+                showSimpleMessage("Mood Logged", `You've logged your mood as ${mood}.`, 'pink-400');
                 closeModal('mood-modal');
             });
         });
 
-        // 🌙 Daily System Functions (Unchanged)
-        function scheduleDay() {
-            const schedule = "7:00 AM: Water Tracker & Mood Log. 7:30 AM: Breakfast (Log via AI Scan). 10:30 AM: Posture Alert & Stretch. 1:00 PM: Lunch (Log). 3:00 PM: Affirmation Break. 6:00 PM: Workout Routine. 7:30 PM: Dinner (Log). 10:00 PM: Gratitude Journal.";
-            showSimpleMessage("Sample Daily Schedule", schedule, 'blue-400');
-        }
 
-        function showReminders() {
-            showSimpleMessage("Health Reminders", "Reminders are set for Water (Every 2h), Posture (Every 1h), and Journaling (9 PM).", 'amber-400');
-        }
+        // --- Initialization (Main Function) ---
 
-        function runChallenge() {
-            showSimpleMessage("2-Day Challenge", "Challenge Accepted! Goal: Log all meals with Eatsence, hit 8 cups of water, and write 2 gratitude entries. Start now!", 'amber-400');
-        }
-
-        // --- Initialize the app (MODIFIED) ---
-        function initializeApp() {
-            if (currentUser) {
-                // The display name should already be set in the handleSuccessfulLogin flow
-                const displayName = currentUser.displayName || currentUser.email.split('@')[0];
-                document.getElementById('username-display').textContent = displayName;
-                document.getElementById('header-username').textContent = displayName;
-                document.getElementById('user-email').textContent = currentUser.email;
-                document.getElementById('user-initial').textContent = displayName.charAt(0).toUpperCase();
-                
-                // Fetch email reports toggle state
-                db.collection('users').doc(currentUser.uid).get()
-                    .then((doc) => {
-                        if (doc.exists) {
-                            const userData = doc.data();
-                            if (userData.enableEmailReports !== undefined) {
-                                // This is only visible on the login screen, so this is for setting it up
-                                // correctly if they log out and log back in.
-                                const toggle = document.getElementById('email-reports-toggle');
-                                if (toggle) toggle.checked = userData.enableEmailReports;
-                            }
-                        }
-                    });
-                
-                const initialLogState = getLog();
-                renderDashboard(initialLogState);
-                
-                setupEventListeners();
+        window.onload = function() {
+            // NEW: Check for username in localStorage or prompt for it
+            let username = localStorage.getItem(USERNAME_KEY);
+            if (!username) {
+                username = prompt("Welcome to eatsence.ai! What's your name?") || "User";
+                localStorage.setItem(USERNAME_KEY, username);
             }
-        }
+            document.getElementById('username-display').textContent = username;
 
-        // REBUILT LOGIC: Event Listener Setup (MODIFIED to use handleLogin for both sign-in/sign-up)
-        function setupEventListeners() {
-            // Login form
-            document.getElementById('login-form').addEventListener('submit', (e) => {
-                e.preventDefault();
-                const email = document.getElementById('email-input').value;
-                const password = document.getElementById('password-input').value;
-                const enableEmailReports = document.getElementById('email-reports-toggle').checked;
-                handleLogin(email, password, enableEmailReports);
-            });
-            // Google Login Button
-            document.getElementById('google-login-button').addEventListener('click', signInWithGoogle);
-
-            // Camera controls
-            document.getElementById('switch-camera').addEventListener('click', switchCamera);
-            document.getElementById('capture-button').addEventListener('click', captureImage);
-            document.getElementById('reset-camera-view').addEventListener('click', resetCameraView);
-            
-            document.getElementById('upload-button').addEventListener('click', () => {
-                document.getElementById('file-input').click();
-            });
-
-            // File input
-            document.getElementById('file-input').addEventListener('change', (e) => {
-                if (e.target.files[0]) {
-                    handleFileUpload(e.target.files[0]);
-                }
-            });
-
-            // Modal close buttons
-            document.getElementById('close-modal-button').addEventListener('click', () => closeModal('scan-modal'));
-            document.getElementById('close-modal-backdrop').addEventListener('click', () => closeModal('scan-modal'));
-            
+            // Event Listeners for Modals
+            document.getElementById('scan-button').addEventListener('click', () => openModal('scan-modal'));
+            document.getElementById('close-modal').addEventListener('click', () => closeModal('scan-modal'));
             document.getElementById('goals-button').addEventListener('click', () => {
                 const log = getLog();
                 document.getElementById('target-kcal-input').value = log.target_kcal;
@@ -2089,69 +1338,42 @@
                 document.getElementById('target-carbs-input').value = log.targets.carbs;
                 openModal('goals-modal');
             });
-            document.getElementById('close-goals-button').addEventListener('click', () => closeModal('goals-modal'));
-            document.getElementById('close-goals-backdrop').addEventListener('click', () => closeModal('goals-modal'));
-            
-            document.getElementById('close-message-backdrop').addEventListener('click', () => closeModal('message-modal'));
-            document.getElementById('close-journal-backdrop').addEventListener('click', () => closeModal('journal-modal'));
-            document.getElementById('close-mood-backdrop').addEventListener('click', () => closeModal('mood-modal'));
+            document.getElementById('close-goals-modal').addEventListener('click', () => closeModal('goals-modal'));
 
-            // Main Analysis Button
-            document.getElementById('analyze-button').addEventListener('click', () => handleAnalysis(document.getElementById('manual-food-select').value));
+            // New: Outside click handler for scan-modal
+            document.getElementById('scan-modal').addEventListener('click', function(e) {
+                const modalContent = document.getElementById('scan-modal-content');
+                if (e.target === this && !modalContent.contains(e.target)) {
+                    closeModal('scan-modal');
+                }
+            });
 
+            // New: Mobile sidebar toggle button handler
+            document.getElementById('mobile-sidebar-toggle').addEventListener('click', toggleSidebar);
+
+            // **NEW LOGIC:** Trigger analysis when a file is selected using either input
+            document.getElementById('file-input-capture').addEventListener('change', () => {
+                 // Trigger the form submit logic when a file is selected
+                document.getElementById('analyze-button').click(); 
+            });
+            document.getElementById('file-input-upload').addEventListener('change', () => {
+                 document.getElementById('analyze-button').click();
+            });
+
+            // Form Submissions
+            document.getElementById('scan-form').addEventListener('submit', handleAnalysis);
             document.getElementById('goals-form').addEventListener('submit', handleGoalSetting);
             document.getElementById('log-button').addEventListener('click', handleLogEntry);
             
-            // Portion input
+            // Portion Input Listener
             document.getElementById('portion-grams').addEventListener('input', (e) => {
-                updatePortionKcal(parseInt(e.target.value) || 0);
+                updatePortionKcal(parseFloat(e.target.value) || 0);
             });
 
-            // Scan button
-            document.getElementById('scan-button').addEventListener('click', () => openModal('scan-modal'));
-        }
-
-        // Check if user is already logged in (MODIFIED)
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                // Check for and set displayName if missing
-                if (!user.displayName && user.email) {
-                    // Try to fetch it from Firestore first
-                    db.collection('users').doc(user.uid).get().then(doc => {
-                        if (doc.exists && doc.data().displayName) {
-                             user.displayName = doc.data().displayName;
-                        } else {
-                            // Fallback to email prefix
-                            user.displayName = user.email.split('@')[0];
-                        }
-                        currentUser = user;
-                        showWelcomeAnimation();
-                    }).catch(() => {
-                        // Fallback in case of Firestore error
-                        user.displayName = user.email.split('@')[0];
-                        currentUser = user;
-                        showWelcomeAnimation();
-                    });
-                } else {
-                    currentUser = user;
-                    showWelcomeAnimation();
-                }
-                
-            } else {
-                // If the user isn't logged in, wait for the welcome animation to fade out
-                setTimeout(() => {
-                    document.getElementById('welcome-animation').classList.add('fade-out');
-                    setTimeout(() => {
-                        document.getElementById('login-flow-container').classList.remove('hidden');
-                        document.getElementById('login-screen').classList.remove('hidden');
-                        document.getElementById('login-footer').classList.remove('hidden');
-                        // Ensure it's set to sign-in by default
-                        isSigningUp = false; 
-                    }, 1000);
-                }, 3000);
-            }
-        });
-
+            // Load and render initial dashboard state
+            const initialLogState = getLog();
+            renderDashboard(initialLogState);
+        };
     </script>
 </body>
 </html>

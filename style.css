@@ -1,0 +1,169 @@
+ :root {
+            --primary-gold: #D4AF37;
+            --deep-navy: #0A0E17;
+            /* New Aesthetic Colors */
+            --neon-blue: #00d9ff;
+            --neon-purple: #a855f7;
+            --accent-glow: rgba(250, 204, 21, 0.5); /* Using gold for glow */
+            --darker: #020617;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        
+        /* UPDATED GLASS MORPHISM */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03); /* More subtle background */
+            backdrop-filter: blur(30px); /* VERY DEEP BLUR */
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Defined border */
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4); /* Stronger shadow */
+            /* Animation properties for observer */
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        
+        /* Aesthetic social button style */
+        .social-button {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.1);
+            position: relative;
+            overflow: hidden;
+            /* Ensure the icon is centered and properly sized */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem; 
+            font-size: 1.5rem;
+        }
+        
+        .social-button:hover {
+            transform: translateY(-3px);
+            background: rgba(212, 175, 55, 0.1); /* Subtle gold hover effect */
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+        }
+
+        .glass-card.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .nav-link.active {
+            color: #facc15; 
+            border-bottom: 2px solid #facc15;
+        }
+        
+        .tab-btn.active {
+            background-color: #facc15;
+            color: #111827;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+
+        /* WATER DROP / SHINE EFFECT FOR BUTTON */
+        .luxury-launch-button {
+            background: linear-gradient(135deg, var(--primary-gold) 0%, #B8860B 100%);
+            color: var(--deep-navy);
+            font-weight: 700;
+            border-radius: 16px;
+            padding: 14px 28px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            border: none;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .luxury-launch-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transform: skewX(-20deg);
+            transition: all 0.7s;
+        }
+
+        .luxury-launch-button:hover::before {
+            left: 150%;
+        }
+
+        .luxury-launch-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.7);
+        }
+
+        /* PARALLAX EFFECT ON SECTIONS */
+        .parallax-section {
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        /* UPDATED: Hero section with a themed image */
+        #home {
+            background-image: linear-gradient(to bottom, rgba(10, 14, 23, 0.8), rgba(10, 14, 23, 0.9)), url('https://placehold.co/1920x1080/0A0E17/fff/Meal%20Placeholder'); 
+            background-attachment: fixed;
+        }
+        
+        #solution, #features {
+            background-color: #0d131f; /* Consistent dark background for seamless scrolling */
+        }
+
+        /* NEW: Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* DEVELOPER MODAL SPECIFIC STYLES (Neon Aesthetic) */
+        .dev-modal-card {
+            background-color: var(--darker); /* #020617 */
+            padding: 3rem;
+            width: 90%;
+            max-width: 600px;
+            color: #F5F5F0;
+            border-radius: 24px;
+            border: 2px solid var(--neon-blue);
+            box-shadow: 0 0 40px rgba(0, 217, 255, 0.3), 0 0 20px rgba(168, 85, 247, 0.3);
+            animation: border-pulse-dev 4s infinite ease-in-out;
+        }
+
+        @keyframes border-pulse-dev {
+            0% { border-color: rgba(0, 217, 255, 0.8); }
+            50% { border-color: rgba(168, 85, 247, 0.8); }
+            100% { border-color: rgba(0, 217, 255, 0.8); }
+        }
+
+        .dev-highlight-card {
+            background: rgba(15, 23, 42, 0.7); /* slate-900/70 */
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--neon-purple);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+        }

@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eatsence.AI | Interactive Project Showcase</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-900 text-gray-100">
+
+    <!-- Header & Navigation -->
+    <header class="bg-slate-900/80 backdrop-blur-md sticky top-0 z-50 w-full border-b border-slate-700">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0 flex items-center">
+                    <span class="text-2xl font-bold text-yellow-400">Eatsence.AI</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#home" data-section="home" class="nav-link text-gray-300 hover:text-yellow-400 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200">Home</a>
+                        <a href="#solution" data-section="solution" class="nav-link text-gray-300 hover:text-yellow-400 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200">Solution</a>
+                        <a href="#features" data-section="features" class="nav-link text-gray-300 hover:text-yellow-400 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200">Features</a>
+                        <a href="#market" data-section="market" class="nav-link text-gray-300 hover:text-yellow-400 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200">Market</a>
+                        <a href="#roadmap" data-section="roadmap" class="nav-link text-gray-300 hover:text-yellow-400 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200">Roadmap</a>
+                        <!-- NEW: Developer Link in Nav -->
+                        <button onclick="showDeveloperModal()" class="nav-link text-gray-300 hover:text-yellow-400 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 focus:outline-none">Developer</button>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" id="mobile-menu-button" class="bg-slate-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-white">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" data-section="home" class="nav-link text-gray-300 hover:text-yellow-400 block px-3 py-2 rounded-md text-base font-medium">Home</a>
+                <a href="#solution" data-section="solution" class="nav-link text-gray-300 hover:text-yellow-400 block px-3 py-2 rounded-md text-base font-medium">Solution</a>
+                <a href="#features" data-section="features" class="nav-link text-gray-300 hover:text-yellow-400 block px-3 py-2 rounded-md text-base font-medium">Features</a>
+                <a href="#market" data-section="market" class="nav-link text-gray-300 hover:text-yellow-400 block px-3 py-2 rounded-md text-base font-medium">Market</a>
+                <a href="#roadmap" data-section="roadmap" class="nav-link text-gray-300 hover:text-yellow-400 block px-3 py-2 rounded-md text-base font-medium">Roadmap</a>
+                <!-- NEW: Developer Link in Mobile Menu -->
+                <button onclick="showDeveloperModal(); closeMobileMenu();" class="nav-link text-gray-300 hover:text-yellow-400 block px-3 py-2 rounded-md text-base font-medium w-full text-left">Developer</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Section 1: Home / Hero (Parallax) -->
+        <section id="home" class="parallax-section pt-20 pb-16 md:pt-32 md:pb-24 flex items-center justify-center text-center min-h-[calc(100vh-4rem)]">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h1 class="text-4xl md:text-6xl font-bold tracking-tight animate-on-scroll">
+                    <span class="text-white">Empowering Healthier Lives With</span>
+                    <span class="block text-yellow-400">Intelligent Technology</span>
+                </h1>
+                <p class="mt-6 text-lg md:text-xl text-gray-300 max-w-2xl mx-auto animate-on-scroll" style="transition-delay: 0.1s">
+                    Eatsence.AI is an AI-powered nutrition and wellness solution that solves the chronic pain points of manual calorie counting and fragmented health apps. Our mission is to make advanced health tracking accessible, intuitive, and effective for everyone.
+                </p>
+                <!-- UPDATED BUTTON CLASS: Opens in a new tab -->
+                <a href="eatsence-ai-dashboard.html" target="_blank" class="mt-10 inline-flex items-center justify-center luxury-launch-button text-xl py-3 px-8 shadow-2xl transition-all duration-330 transform hover:scale-105 animate-on-scroll" style="transition-delay: 0.2s">
+                    Launch Live Dashboard App
+                </a>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="glass-card rounded-xl p-6 shadow-lg animate-on-scroll">
+                        <div class="text-yellow-400 text-5xl font-bold">90%</div>
+                        <div class="mt-2 text-lg font-semibold text-white">Time Savings</div>
+                        <p class="text-sm text-gray-300">Faster food logging versus manual entry.</p>
+                    </div>
+                    <div class="glass-card rounded-xl p-6 shadow-lg animate-on-scroll">
+                        <div class="text-yellow-400 text-5xl font-bold">100%</div>
+                        <div class="mt-2 text-lg font-semibold text-white">Improved Accuracy</div>
+                        <p class="text-sm text-gray-300">Enhanced portion estimation with AI.</p>
+                    </div>
+                    <div class="glass-card rounded-xl p-6 shadow-lg animate-on-scroll">
+                        <div class="text-yellow-400 text-5xl font-bold">85%</div>
+                        <div class="mt-2 text-lg font-semibold text-white">Better Outcomes</div>
+                        <p class="text-sm text-gray-300">Consistent habit formation.</p>
+                    </div >
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Problem & Solution -->
+        <section id="solution" class="parallax-section py-16 md:py-24">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12 animate-on-scroll">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white">The Old Way vs. The Eatsence Way</h2>
+                    <p class="mt-4 text-lg text-gray-300">We built Eatsence.AI to solve the core frustrations of health tracking.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="glass-card rounded-xl p-8 shadow-lg border-red-500/30 border-2 animate-on-scroll">
+                        <h3 class="text-2xl font-semibold text-red-400 mb-4">The Problem</h3>
+                        <ul class="space-y-3 text-gray-200">
+                            <li class="flex items-start">
+                                <span class="flex-shrink-0 w-6 h-6 rounded-full bg-red-500/30 text-red-300 flex items-center justify-center mr-3 font-bold text-sm">✕</span>
+                                <strong>Tedious & Inaccurate:</strong> Manual calorie counting is a chore and prone to errors.
+                            </li>
+                            <li class="flex items-start">
+                                <span class="flex-shrink-0 w-6 h-6 rounded-full bg-red-500/30 text-red-300 flex items-center justify-center mr-3 font-bold text-sm">✕</span>
+                                <strong>Lack of Personalization:</strong> Generic advice that ignores individual needs.
+                            </li>
+                            <li class="flex items-start">
+                                <span class="flex-shrink-0 w-6 h-6 rounded-full bg-red-500/30 text-red-300 flex items-center justify-center mr-3 font-bold text-sm">✕</span>
+                                <strong>Fragmented Apps:</strong> Using separate apps for nutrition, workouts, and mental health.
+                            </li>
+                            <li class="flex items-start">
+                                <span class="flex-shrink-0 w-6 h-6 rounded-full bg-red-500/30 text-red-300 flex items-center justify-center mr-3 font-bold text-sm">✕</span>
+                                <strong>Poor User Experience:</strong> Users struggle with food identification and portion estimation.
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="glass-card rounded-xl p-8 shadow-lg border-yellow-500/30 border-2 animate-on-scroll" style="transition-delay: 0.1s">
+                        <h3 class="text-2xl font-semibold text-yellow-400 mb-4">Our Solution</h3>
+                        <ul class="space-y-3 text-gray-200">
+                            <li class="flex items-start">
+                                <span class="flex-shrink-0 w-6 h-6 rounded-full bg-yellow-500/30 text-yellow-300 flex items-center justify-center mr-3 font-bold text-sm">✓</span>
+                                <strong>AI Food Scanning:</strong> Real-time, multi-modal image recognition for automatic nutrient breakdown.
+                            </li>
+                            <li class="flex items-start">
+                                <span class="flex-shrink-0 w-6 h-6 rounded-full bg-yellow-500/30 text-yellow-300 flex items-center justify-center mr-3 font-bold text-sm">✓</span>
+                                4g Strong>Smart Tracking:</strong> Dynamic calorie and macro tracking with personalized goals.
+                            </li>
+                            <li class="flex items-start">
+                                <span class="flex-shrink-0 w-6 h-6 rounded-full bg-yellow-500/30 text-yellow-300 flex items-center justify-center mr-3 font-bold text-sm">✓</span>
+                                <strong>Holistic Wellness:</strong> One platform for nutrition, mental, physical, and emotional health.
+                            </li>
+                            <li class="flex items-start">
+                                <span class="flex-shrink-0 w-6 h-6 rounded-full bg-yellow-500/30 text-yellow-300 flex items-center justify-center mr-3 font-bold text-sm">✓</span>
+                                <strong>Premium Experience:</strong> Intuitive design, one-click logging, and privacy-focused.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: How It Works / Pipeline -->
+        <section id="pipeline" class="parallax-section py-16 md:py-24 bg-slate-900">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12 animate-on-scroll">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white">Intelligent Food Recognition Pipeline</h2>
+                    <p class="mt-4 text-lg text-gray-300">Transforming food logging from a chore into a seamless experience.</p>
+                </div>
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0">
+                    <!-- Step 1 -->
+                    <div class="flex-1 flex flex-col items-center text-center p-4 animate-on-scroll">
+                        <div class="w-16 h-16 rounded-full bg-yellow-400 text-slate-900 flex items-center justify-center text-2xl font-bold mb-4">1</div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Multi-Modal Input</h3>
+                        <p class="text-gray-300">Users log food via live camera capture, image upload, or manual selection.</p>
+                    </div>
+                    
+                    <!-- Arrow -->
+                    <div class="w-full md:w-auto text-yellow-400 text-3xl rotate-90 md:rotate-0 animate-on-scroll">
+                        →
+                    </div>
+                    
+                    <!-- Step 2 -->
+                    <div class="flex-1 flex flex-col items-center text-center p-4 animate-on-scroll" style="transition-delay: 0.1s">
+                        <div class="w-16 h-16 rounded-full bg-yellow-400 text-slate-900 flex items-center justify-center text-2xl font-bold mb-4">2</div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Advanced AI Processing</h3>
+                        <p class="text-gray-300">Gemini 2.5 Flash identifies food, provides a confidence score, and breaks down nutrients per 100g.</p>
+                    </div>
+                    
+                    <!-- Arrow -->
+                    <div class="w-full md:w-auto text-yellow-400 text-3xl rotate-90 md:rotate-0 animate-on-scroll" style="transition-delay: 0.2s">
+                        →
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="flex-1 flex flex-col items-center text-center p-4 animate-on-scroll" style="transition-delay: 0.3s">
+                        <div class="w-16 h-16 rounded-full bg-yellow-400 text-slate-900 flex items-center justify-center text-2xl font-bold mb-4">3</div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Precision Results</h3>
+                        <p class="text-gray-300">Delivers accurate calorie estimation, macro-nutrient tracking, and practical meal planning tips.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Features / Holistic Ecosystem -->
+        <section id="features" class="parallax-section py-16 md:py-24 bg-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12 animate-on-scroll">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white">A Complete Holistic Ecosystem</h2>
+                    <p class="mt-4 text-lg text-gray-300">One app for your complete well-being. Explore our core features.</p>
+                </div>
+                
+                <!-- Tab Buttons -->
+                <div class="mb-8 flex flex-wrap justify-center gap-2 animate-on-scroll">
+                    <button class="tab-btn active text-sm md:text-base font-semibold px-4 py-2 rounded-full bg-slate-700 text-gray-100 transition-all duration-200" data-target="tab-nutrition">
+                        Smart Nutrition
+                    </button>
+                    <button class="tab-btn text-sm md:text-base font-semibold px-4 py-2 rounded-full bg-slate-700 text-gray-100 transition-all duration-200" data-target="tab-mental">
+                        Mental Flow
+                    </button>
+                    <button class="tab-btn text-sm md:text-base font-semibold px-4 py-2 rounded-full bg-slate-700 text-gray-100 transition-all duration-200" data-target="tab-physical">
+                        Physical Balance
+                    </button>
+                    <button class="tab-btn text-sm md:text-base font-semibold px-4 py-2 rounded-full bg-slate-700 text-gray-100 transition-all duration-200" data-target="tab-emotional">
+                        Emotional Core
+                    </button>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="glass-card rounded-xl p-8 md:p-12 shadow-lg min-h-[250px] animate-on-scroll">
+                    <!-- Nutrition Tab (Default) -->
+                    <div id="tab-nutrition" class="tab-content">
+                        <h3 class="text-2xl font-semibold text-yellow-400 mb-4">Smart Nutrition & AI Scanning</h3>
+                        <p class="text-gray-200 mb-4">Leveraging Gemini AI, our core feature provides real-time food recognition, automatic nutrient breakdown, and precise portion analysis. This powers our dynamic calorie and macro tracking, complete with personalized goal setting and progress visualization.</p>
+                        <ul class="list-disc list-inside text-gray-300 space-y-1">
+                            <li>Real-time AI Food Scanning</li>
+                            <li>Dynamic Calorie & Macro Tracking</li>
+                            <li>Personalized Goal Setting</li>
+                            <li>Progress Visualization</li>
+                        </ul>
+                    </div>
+                    <!-- Mental Tab -->
+                    <div id="tab-mental" class="tab-content hidden">
+                        <h3 class="text-2xl font-semibold text-yellow-400 mb-4">Mental Flow</h3>
+                        <p class="text-gray-200 mb-4">Support your mental well-being with tools designed to promote mindfulness and positivity. Integrate mental clarity into your daily health routine.</p>
+                        <ul class="list-disc list-inside text-gray-300 space-y-1">
+                            <li>Guided Meditation Sessions</li>
+                            <li>Daily Gratitude Journaling</li>
+                            <li>AI-Powered Affirmation Generator</li>
+                        </ul>
+                    </div>
+                    <!-- Physical Tab -->
+                    <div id="tab-physical" class="tab-content hidden">
+                        <h3 class="text-2xl font-semibold text-yellow-400 mb-4">Physical Balance</h3>
+                        <p class="text-gray-200 mb-4">Go beyond tracking and start planning. Our AI helps you build a balanced physical routine, from meals to workouts, all in one place.</p>
+                        <ul class="list-disc list-inside text-gray-300 space-y-1">
+                            <li>AI-Powered Meal Planning</li>
+                            <li>Smart Water Intake Tracking</li>
+                            <li>Custom Workout Routine Generator</li>
+                        </ul>
+                    </div>
+                    <!-- Emotional Tab -->
+                    <div id="tab-emotional" class="tab-content hidden">
+                        <h3 class="text-2xl font-semibold text-yellow-400 mb-4">Emotional Core</h3>
+                        <p class="text-gray-200 mb-4">Tune into your emotional health. Log your mood, find moments of calm, and connect with a positive community, all within the Eatsence.AI ecosystem.</p>
+                        <ul class="list-disc list-inside text-gray-300 space-y-1">
+                            <li>Mood Tracking with Emojis</li>
+                            <li>Relaxation Music Player</li>
+                            <li>Positive Social Connection Tools</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Market & Business -->
+        <section id="market" class="parallax-section py-16 md:py-24 bg-slate-900">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12 animate-on-scroll">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white">Market & Commercial Potential</h2>
+                    <p class="mt-4 text-lg text-gray-300">Addressing a massive opportunity with a clear business model.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <!-- Left: Market & Revenue -->
+                    <div class="space-y-8">
+                        <div class="animate-on-scroll">
+                            <h3 class="text-2xl font-semibold text-yellow-400 mb-2">Market Opportunity</h3>
+                            <p class="text-6xl font-bold text-white">$7 Trillion</p>
+                            <p class="text-xl text-gray-300">Global Wellness Market</p>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-2xl font-semibold text-yellow-400 mb-4 animate-on-scroll" style="transition-delay: 0.1s">Revenue Streams</h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="glass-card rounded-lg p-4 text-center animate-on-scroll" style="transition-delay: 0.2s">
+                                    <span class="text-3xl">Subscription</span>
+                                    <p class="text-sm text-gray-300">Premium AI Coaching</p>
+                                </div>
+                                <div class="glass-card rounded-lg p-4 text-center animate-on-scroll" style="transition-delay: 0.3s">
+                                    <span class="text-3xl">Partnerships</span>
+                                    <p class="text-sm text-gray-300">Healthcare & Fitness Brands</p>
+                                </div>
+                                <div class="glass-card rounded-lg p-4 text-center animate-on-scroll" style="transition-delay: 0.4s">
+                                    <span class="text-3xl">B2B Solutions</span>
+                                    <p class="text-sm text-gray-300">Corporate Wellness</p>
+                                </div>
+                                <div class="glass-card rounded-lg p-4 text-center animate-on-scroll" style="transition-delay: 0.5s">
+                                    <span class="text-3xl">Data Insights</span>
+                                    <p class="text-sm text-gray-300">Ethical & Anonymized</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right: Chart -->
+                    <div>
+                        <h3 class="text-2xl font-semibold text-yellow-400 mb-4 text-center md:text-left animate-on-scroll">Tangible Value for Users (%)</h3>
+                        <div class="glass-card rounded-xl p-6 shadow-lg animate-on-scroll" style="transition-delay: 0.6s">
+                            <div class="chart-container">
+                                <canvas id="valueChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section 6: Roadmap -->
+        <section id="roadmap" class="parallax-section py-16 md:py-24 bg-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12 animate-on-scroll">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white">Technical Excellence & Growth</h2>
+                    <p class="mt-4 text-lg text-gray-300">We are scalable and ready for the future.</p>
+                </div>
+                
+                <div class="flex flex-col md:flex-row justify-between items-stretch gap-8">
+                    <!-- Step 1 -->
+                    <div class="flex-1 glass-card rounded-xl p-6 shadow-lg flex flex-col items-center text-center animate-on-scroll">
+                        <div class="w-16 h-16 rounded-full bg-slate-700 text-yellow-400 flex items-center justify-center text-2xl font-bold mb-4">1</div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Current Implementation</h3>
+                        <p class="text-gray-300">A Fully Functional MVP with a complete feature set and production-ready codebase. Modular, API-first, and cloud-ready.</p>
+                    </div>
+                    
+                    <!-- Step 2 -->
+                    <div class="flex-1 glass-card rounded-xl p-6 shadow-lg flex flex-col items-center text-center animate-on-scroll" style="transition-delay: 0.1s">
+                        <div class="w-16 h-16 rounded-full bg-slate-700 text-yellow-400 flex items-center justify-center text-2xl font-bold mb-4">2</div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Next Steps</h3>
+                        <p class="text-gray-300">Building a supportive community and providing deeper insights with social features and an advanced analytics dashboard.</p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="flex-1 glass-card rounded-xl p-6 shadow-lg flex flex-col items-center text-center animate-on-scroll" style="transition-delay: 0.2s">
+                        <div class="w-16 h-16 rounded-full bg-slate-700 text-yellow-400 flex items-center justify-center text-2xl font-bold mb-4">3</div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Future Roadmap</h3>
+                        <p class="text-gray-300">Seamlessly integrating with the devices users already love, starting with smartwatches and fitness trackers.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Developer Modal (NEW AESTHETIC) -->
+    <div id="developer-modal" class="modal-overlay hidden" onclick="hideDeveloperModal(event)">
+        <div class="dev-modal-card" onclick="event.stopPropagation()">
+            <h2 class="text-3xl font-bold text-yellow-400 mb-8 text-center" style="text-shadow: 0 0 15px var(--accent-glow);">About the Developer</h2>
+            
+            <!-- Profile Icon -->
+            <div class="w-24 h-24 bg-yellow-400 rounded-full mx-auto mb-6 flex items-center justify-center text-5xl text-slate-900 font-bold" style="box-shadow: 0 0 10px var(--accent-glow);">
+                A
+            </div>
+            
+            <p class="text-lg text-center text-gray-300 mb-4">
+                This interactive showcase was crafted by **abhiwebdesign**, a specialist in building **high-aesthetic, data-driven web applications** and interactive UIs.
+            </p>
+
+            <div class="dev-highlight-card">
+                <p class="text-yellow-400 font-semibold flex items-center mb-2">
+                    <span class="mr-2 text-xl" style="color: var(--neon-blue);">💡</span> Focus:
+                    <span class="ml-2 text-gray-300 font-normal">AI Integration, Interactive Storytelling, Premium Frontend UX/UI.</span>
+                </p>
+                <p class="text-yellow-400 font-semibold flex items-center">
+                    <span class="mr-2 text-xl" style="color: var(--neon-purple);">🛠️</span> Core Skills:
+                    <span class="ml-2 text-gray-300 font-normal">HTML, Tailwind CSS, JavaScript (SPA), Chart.js.</span>
+                </p>
+            </div>
+
+            <!-- Custom Aesthetic Close Button -->
+            <button onclick="hideDeveloperModal()" class="luxury-launch-button w-full mt-6 py-3 px-6 text-lg">
+                Close & Return to Showcase
+            </button>
+          <button class="luxury-launch-button w-full mt-6 py-3 px-6 text-lg "><a href="https://abhiwebdesign.great-site.net/"> more about Developer's </a></button>
+        </div>
+      
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-700">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 text-center">
+            
+            <p class="text-xs text-gray-500 mb-2">
+                Powered by - <span class="text-yellow-400 font-semibold">abhiwebdesign</span>
+            </p>
+            <!-- NEW: Aesthetic About Developer Button in Footer -->
+            <button onclick="showDeveloperModal()" class="inline-flex items-center justify-center luxury-launch-button text-base py-2 px-4 shadow-xl transition-all duration-330 transform hover:scale-105 mt-2">
+                About Developer
+            </button>
+            <p class="text-base text-gray-400 mt-4">&copy; 2025 Eatsence.AI. Transforming Health Management.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Modal Control Functions ---
+        function showDeveloperModal() {
+            document.getElementById('developer-modal').classList.remove('hidden');
+        }
+
+        function hideDeveloperModal(event) {
+            // Only close if event is not provided OR if the clicked element is the overlay itself
+            if (!event || event.target.id === 'developer-modal') {
+                 document.getElementById('developer-modal').classList.add('hidden');
+            }
+        }
+
+        // --- Standard App Logic ---
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Mobile Menu Toggle ---
+            const menuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+
+            menuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                menuButton.querySelector('svg:first-child').classList.toggle('hidden');
+                menuButton.querySelector('svg:last-child').classList.toggle('hidden');
+            });
+            
+            const closeMobileMenu = () => {
+                mobileMenu.classList.add('hidden');
+                menuButton.querySelector('svg:first-child').classList.remove('hidden');
+                menuButton.querySelector('svg:last-child').classList.add('hidden');
+            };
+            
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', closeMobileMenu);
+            });
+
+            // --- Smooth Scroll & Active Nav State ---
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section[id]');
+
+            const setActiveLink = (sectionId) => {
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.dataset.section === sectionId);
+                });
+            };
+
+            const navObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        setActiveLink(entry.target.id);
+                    }
+                });
+            }, { rootMargin: '-50% 0px -50% 0px' }); 
+
+            sections.forEach(section => {
+                navObserver.observe(section);
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    // FIX: Ensure link.hash is a string before calling startsWith
+                    if (typeof link.hash === 'string' && link.hash.startsWith('#')) {
+                        e.preventDefault();
+                        const targetElement = document.querySelector(link.hash);
+                        if (targetElement) {
+                            targetElement.scrollIntoView({ behavior: 'smooth' });
+                            if (window.innerWidth < 768) {
+                                closeMobileMenu();
+                            }
+                        }
+                    }
+                });
+            });
+            
+            // Set initial active link
+            const firstSection = sections[0];
+            if (firstSection) {
+                 setActiveLink(firstSection.id);
+            }
+
+            // --- Scroll Animation Logic (Intersection Observer) ---
+            const animateElements = document.querySelectorAll('.animate-on-scroll');
+            const cardObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Apply the final state class
+                        if (entry.target.classList.contains('glass-card')) {
+                             entry.target.classList.add('animate-in');
+                        } else {
+                            // Apply CSS transitions to non-card elements (like text, headers)
+                            entry.target.style.opacity = 1;
+                            entry.target.style.transform = 'translateY(0)';
+                        }
+                        // Stop observing once animated
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                rootMargin: '0px',
+                threshold: 0.1 // Trigger when 10% of the element is visible
+            });
+
+            animateElements.forEach(element => {
+                // Initialize state for non-card elements (cards have initial state in CSS)
+                if (!element.classList.contains('glass-card')) {
+                    element.style.opacity = 0;
+                    element.style.transform = 'translateY(40px)';
+                    element.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
+                }
+                cardObserver.observe(element);
+            });
+
+
+            // --- Tabbed Interface Logic ---
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.dataset.target;
+                    
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    tabContents.forEach(content => {
+                        content.classList.toggle('hidden', content.id !== targetId);
+                    });
+                });
+            });
+
+            // --- Chart.js Value Chart ---
+            const ctx = document.getElementById('valueChart');
+            if (ctx) {
+                new Chart(ctx.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['Time Savings', 'Accuracy Improvement', 'Health Outcomes'],
+                        datasets: [{
+                            label: '% Improvement',
+                            data: [90, 100, 85],
+                            backgroundColor: [
+                                'rgba(250, 204, 21, 0.7)', 
+                                'rgba(250, 204, 21, 0.9)', 
+                                'rgba(250, 204, 21, 0.5)'  
+                            ],
+                            borderColor: [
+                                'rgba(250, 204, 21, 1)',
+                                'rgba(250, 204, 21, 1)',
+                                'rgba(250, 204, 21, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.label}: ${context.raw}%`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                },
+                                ticks: {
+                                    color: 'rgba(255, 255, 255, 0.7)',
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    color: 'rgba(255, 255, 255, 0.7)',
+                                    font: {
+                                        size: 14
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
